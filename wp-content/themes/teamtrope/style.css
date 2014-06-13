@@ -1,0 +1,14 @@
+/*
+Theme Name: Teamtrope Standard
+Theme URI: http://booktrope.com
+Description: Teamtrope standard for BuddyPress.
+Version: 1.0
+Author: Andy Roberts
+Author URI: http://booktrope.com
+Template: bp-default
+Tags: buddypress, two-column, grey, dark
+*/
+.hidden { display: none; }
+.unhidden { display: block; }
+#formarea { float: left; width: 80%; padding 20px; margin-left:40px; border: 1px solid #ddd;}
+#formbuffer {padding: 20px;}

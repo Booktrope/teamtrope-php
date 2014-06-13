@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.frontpagetablemain {
+	text-align: center;
+	background-color: #eee;
+	padding-top: 5px;
+	padding-left: 3px;
+	border-top-width: 2px;
+	border-right-width: 1px;
+	border-bottom-width: 2px;
+	border-left-width: 1px;
+}
+.frontpagetablelinks {
+	border:2px #CCC;
+	text-align:left;
+	background-color: #FFF;
+	width: 500px;
+	padding-left: 5px;
+	font-size: 14px;
+}
+.frontpageleftlinks {
+	padding-left: 10px;
+}
+.frontpagerightlinks {
+	/*border-left-width: thin;
+	border-left-color: #CCC;*/
+	padding-left: 10px;
+}
+.frontpagetabledescrip {
+	background-color: #FFF;
+	width: 500px;
+	text-align:left;
+	font-size: 14px;
+	padding-left: 15px;
+	border-top-width: 2px;
+	border-right-width: 2px;
+	border-bottom-width: 2px;
+	border-left-width: 2px;
+	border-top-color: #CCC;
+	border-right-color: #CCC;
+	border-bottom-color: #CCC;
+	border-left-color: #CCC;
+}
+
+.frontpagedescripcell {
+	padding: 5px;
+}
+
+.frontpagesectiontitles {
+	font-weight: bold;
+	text-transform: uppercase;
+	text-decoration: underline;
+	text-align: center;
+	padding-bottom: 25px;
+}

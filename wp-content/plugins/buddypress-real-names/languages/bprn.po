@@ -1,0 +1,175 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BuddyPress Real Names\n"
+"POT-Creation-Date: 2013-02-03 14:55+0100\n"
+"PO-Revision-Date: 2013-02-03 14:55+0100\n"
+"Last-Translator: G.Breant <dev@pellicule.org>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../bprn-admin.php:69 ../bprn-admin.php:221
+msgid "Display Name"
+msgstr ""
+
+#: ../bprn-admin.php:76
+msgid "Replace display name"
+msgstr ""
+
+#: ../bprn-admin.php:87 ../bprn-admin.php:120 ../bprn-admin.php:153
+msgid "Rule"
+msgstr ""
+
+#: ../bprn-admin.php:102
+msgid "Members"
+msgstr ""
+
+#: ../bprn-admin.php:109
+msgid "Replace name in members lists"
+msgstr ""
+
+#: ../bprn-admin.php:135
+msgid "Alphabetical Members Sorting"
+msgstr ""
+
+#: ../bprn-admin.php:142
+msgid "Change the way members are sorted alphabetically"
+msgstr ""
+
+#: ../bprn-admin.php:201 ../bprn-admin.php:215
+msgid "BuddyPress Real Names"
+msgstr ""
+
+#: ../bprn-admin.php:222
+msgid "Members Lists"
+msgstr ""
+
+#: ../bprn-admin.php:223
+msgid "Members Sorting"
+msgstr ""
+
+#: ../bprn-admin.php:277
+msgid "Admin Profile Fields"
+msgstr ""
+
+#: ../bprn-admin.php:335
+msgid ""
+"Select the fields that the plugin will use for Firstname and for Lastname.  "
+"Those must be textfields, required, and cannot be the base field (Name)"
+msgstr ""
+
+#: ../bprn-admin.php:347
+msgid ""
+"Select the fields that the plugin will use to display the user's real name "
+"throughout the website."
+msgstr ""
+
+#: ../bprn-admin.php:350
+#, php-format
+msgid ""
+"The basic usage would be to create two fields; %1s and %2s, then to set the "
+"rule"
+msgstr ""
+
+#: ../bprn-admin.php:350
+msgid "Firstname"
+msgstr ""
+
+#: ../bprn-admin.php:350
+msgid "Lastname"
+msgstr ""
+
+#: ../bprn-admin.php:351
+msgid "to get something like :"
+msgstr ""
+
+#: ../bprn-admin.php:353
+msgid ""
+"Of course, in this example, 2 should be the ID of your Firstname field and 3 "
+"should be the ID of your Lastname field."
+msgstr ""
+
+#: ../bprn-admin.php:356
+msgid ""
+"This allows to create more complex rules, to display names like this, for "
+"example :"
+msgstr ""
+
+#: ../bprn-admin.php:381
+msgid ""
+"Write a rule that will be used to generate the name of the users in the "
+"Members Lists."
+msgstr ""
+
+#: ../bprn-admin.php:383
+msgid ""
+"For example, you could add a gender field, a firstname field and a lastname "
+"field to generate a name like this :"
+msgstr ""
+
+#: ../bprn-admin.php:407
+#, php-format
+msgid ""
+"With BuddyPress Real Names, you can customize how your users's names are "
+"displayed in many ways, and even add a %1s field as prefix of the name, eg. "
+"%2s."
+msgstr ""
+
+#: ../bprn-admin.php:407
+msgid "gender"
+msgstr ""
+
+#: ../bprn-admin.php:412
+#, php-format
+msgid ""
+"But when BuddyPress sorts the members alphabetically, which field should it "
+"use first ?  %1s ? %2s ? %3s ?"
+msgstr ""
+
+#: ../bprn-admin.php:417
+msgid ""
+"For this reason, you can customize a specific rule that will be used when "
+"sorting the members alphabetically."
+msgstr ""
+
+#: ../bprn-admin.php:419
+#, php-format
+msgid ""
+"Setting a rule that will generate %1s in the Members List will not be a "
+"problem since this rule will be able to sort this member as %2s ! "
+msgstr ""
+
+#: ../bprn-admin.php:426
+#, php-format
+msgid ""
+"Be aware that all the fields of this specific rule MUST be set to %1s in "
+"your fields settings, because optional fields (=empty values) would cause "
+"sorting problems."
+msgstr ""
+
+#: ../bprn-admin.php:426
+msgid "Required"
+msgstr ""
+
+#: ../bprn-admin.php:458
+msgid "No valid fields have been set in the submitted rule!"
+msgstr ""
+
+#: ../bprn-admin.php:497
+#, php-format
+msgid "Those fields are not valid and were removed: %s"
+msgstr ""
+
+#: ../buddypress-real-names.php:92
+msgid "Nickname"
+msgstr ""
+
+#: ../loader.php:27
+msgid "Settings"
+msgstr ""

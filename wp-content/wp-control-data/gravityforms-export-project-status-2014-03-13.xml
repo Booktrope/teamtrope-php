@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms version="1.8.4">
+	<form labelPlacement="top_label" useCurrentUserAsAuthor="1">
+		<title><![CDATA[0.01 Project Status]]></title>
+		<button type="text">
+			<text><![CDATA[Submit]]></text>
+		</button>
+		<fields>
+			<field id="11" isRequired="1" size="medium" type="radio" enableChoiceValue="1">
+				<description><![CDATA[We're here to help! Let us know if you need assistance or if your project is stalled for some reason. No question is too small.]]></description>
+				<label><![CDATA[Type of update]]></label>
+				<choices>
+					<choice isSelected="1">
+						<text><![CDATA[We're doing fine, just our weekly update]]></text>
+						<value><![CDATA[Status Update]]></value>
+					</choice>
+					<choice>
+						<text><![CDATA[We have a question / we're stuck, help!]]></text>
+						<value><![CDATA[Help Request]]></value>
+					</choice>
+				</choices>
+				<enableOtherChoice><![CDATA[1]]></enableOtherChoice>
+			</field>
+			<field id="10" size="small" type="textarea">
+				<description><![CDATA[Enter the current status for your project. ]]></description>
+				<label><![CDATA[Status]]></label>
+			</field>
+			<field adminOnly="1" id="8" size="medium" type="section" displayOnly="1">
+				<label><![CDATA[Project Info]]></label>
+			</field>
+			<field adminOnly="1" id="4" isRequired="1" size="medium" type="text">
+				<defaultValue><![CDATA[{embed_post:post_title}]]></defaultValue>
+				<label><![CDATA[Book Project]]></label>
+			</field>
+			<field adminOnly="1" id="2" isRequired="1" size="medium" type="text">
+				<defaultValue><![CDATA[{user:user_login}]]></defaultValue>
+				<label><![CDATA[Teamtrope ID]]></label>
+			</field>
+			<field adminOnly="1" id="3" isRequired="1" size="medium" type="text">
+				<defaultValue><![CDATA[{embed_post:ID}]]></defaultValue>
+				<label><![CDATA[Project ID]]></label>
+			</field>
+			<field adminOnly="1" id="7" size="medium" type="email">
+				<defaultValue><![CDATA[{user:user_email}]]></defaultValue>
+				<label><![CDATA[Email]]></label>
+			</field>
+			<field adminOnly="1" id="9" size="medium" type="website">
+				<defaultValue><![CDATA[{embed_url}]]></defaultValue>
+				<label><![CDATA[Teamroom link]]></label>
+			</field>
+		</fields>
+		<descriptionPlacement><![CDATA[below]]></descriptionPlacement>
+		<confirmations>
+			<confirmation type="message" id="518957b710a5c" isDefault="1">
+				<name><![CDATA[Default Confirmation]]></name>
+				<message><![CDATA[Thanks for updating your status!
+
+<a href="{embed_url}">Refresh Project Page</a>]]></message>
+			</confirmation>
+		</confirmations>
+		<notifications>
+			<notification id="518957b710c51">
+				<subject><![CDATA[New {form_title} from {user:display_name} for {embed_post:post_title}]]></subject>
+				<message><![CDATA[This is a new submission from the interest form on Teamtrope.
+
+{all_fields}]]></message>
+				<from><![CDATA[andy@booktrope.com]]></from>
+				<fromName><![CDATA[Teamtrope]]></fromName>
+				<fromNameField><![CDATA[1]]></fromNameField>
+				<toType><![CDATA[email]]></toType>
+				<event><![CDATA[form_submission]]></event>
+				<name><![CDATA[Admin Notification]]></name>
+				<type><![CDATA[admin]]></type>
+				<to><![CDATA[andy@booktrope.com]]></to>
+			</notification>
+			<notification id="51d2f78634f7e">
+				<name><![CDATA[User Notification]]></name>
+				<event><![CDATA[form_submission]]></event>
+				<to><![CDATA[7]]></to>
+				<toType><![CDATA[field]]></toType>
+				<subject><![CDATA[{form_title} from {user:display_name} for {embed_post:post_title}]]></subject>
+				<message><![CDATA[Thanks for your interest in the project. We've received your interest form. Here's what was submitted:
+
+{all_fields}
+
+Thanks,
+<em id="__mceDel">Teamtrope Admin</em>]]></message>
+				<from><![CDATA[{admin_email}]]></from>
+				<fromName><![CDATA[Teamtrope]]></fromName>
+			</notification>
+		</notifications>
+	</form>
+</forms>

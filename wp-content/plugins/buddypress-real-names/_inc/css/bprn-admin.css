@@ -1,0 +1,19 @@
+.bprn_list_fields{
+    -moz-column-count:3; /* Firefox */
+    -webkit-column-count:3; /* Safari and Chrome */
+    column-count:3;
+    padding:20px;
+
+    background-color:#f7f7f7;
+}
+
+.bprn_list_fields li {
+    cursor: hand; 
+    cursor: pointer;
+}
+.bprn_list_fields li.selected {
+    font-weight:bold;
+}
+.bprn_list_fields li.required label:after {
+    content:"*";
+}
