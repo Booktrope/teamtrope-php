@@ -312,12 +312,16 @@ function btfs_set_post_content($entry, $form)
 		if($values["asin"])                  { $parseBook->asin = $values["asin"]; }
 		if($values["apple_id"] !== "")       { $parseBook->appleId = $values["apple_id"]; }
 		if($values["hardback_isbn"] !== "")  { $parseBook->hardbackIsbn = $values["hardback_isbn"]; }
-		if($values["paperback_isbn"] !== "") { $parseBook->paperbackIsbn = $values["paperback_isbn"]; }
+		if($values["paperback_isbn"] !== "") 
+		{ 
+			$paperbackISBNNoDash = str_replace("-", "", $values["paperback_isbn"]);
+			$parseBook->paperbackIsbn = $values["paperback_isbn"]; 
+			$parseBook->createspaceIsbn  = $paperbackISBNNoDash;
+			$parseBook->lightningSource  = $paperbackISBNNoDash;
+		}
 		if($values["ebook_isbn"] !== "")     
 		{
 			$epubNoDash = str_replace("-", "", $values["ebook_isbn"]);
-			$parseBook->createspaceIsbn  = $epubNoDash;
-			$parseBook->lightningSource  = $epubNoDash;
 			$parseBook->epubIsbnItunes   = $epubNoDash;
 			$parseBook->epubIsbn         = $values["ebook_isbn"];
 		}
