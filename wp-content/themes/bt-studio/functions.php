@@ -6,7 +6,7 @@ add_filter('gform_admin_pre_render', 'bt_populate_userdropdown');
 add_filter('gform_pre_submission_filter', 'bt_populate_userdropdown');
 function bt_populate_userdropdown($form)
 {
-	if ($form['title'] === '1.15 Accept Team Member')
+	if ($form['title'] === 'Accept Team Member')
 	{	
 		foreach($form['fields'] as &$field)
 		{
@@ -22,6 +22,22 @@ function bt_populate_userdropdown($form)
 			}
 		}
 	}
+	else if($form['title'] === 'Paperback Orders & Other Production Costs')
+	{
+		foreach($form['fields'] as &$field)
+		{
+			if($field["adminLabel"] === "team_member")
+			{
+				$choices = array();
+				$user_list = get_users();
+				foreach($user_list as $user)
+				{
+					array_push($choices, array("text" => $user->display_name, "value" => $user->ID ));
+				}
+				$field["choices"] = $choices;				
+			}
+		}
+	}	
 	else if($form['title'] === 'Control Numbers')
 	{
 		$fields = array();
@@ -919,16 +935,3 @@ if ( !function_exists( 'wdp_un_check' ) ) {
       echo '<div class="error fade"><p>' . __('Please install the latest version of <a href="http://premium.wpmudev.org/project/update-notifications/" title="Download Now &raquo;">our free Update Notifications plugin</a> which helps you stay up-to-date with the most stable, secure versions of WPMU DEV themes and plugins. <a href="http://premium.wpmudev.org/wpmu-dev/update-notifications-plugin-information/">More information &raquo;</a>', 'wpmudev') . '</a></p></div>';
   }
 }
-/* --------------------------------------------------------------------- */
-// ********** myCRED Custom Hooks **********
-add_filter( 'mycred_setup_hooks', 'register_my_custom_hook' );
-function register_my_custom_hook( $installed )
-{
-	$installed['hook_id'] = array(
-		'title'       => __( '%plural% for Teamtrope Activity', 'textdomain' ),
-		'description' => __( 'Credit for completing Teamtrope Activity', 'textdomain' ),
-		'callback'    => array( 'my_group_post_hook_class' )
-	);
-	return $installed;
-}
-
