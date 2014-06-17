@@ -378,7 +378,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 	}
 
 	// when to show Final Files						
-	if (  in_array($pcr_name, array("Upload Final Covers","Show All")) ) 
+	if (  in_array($pcr_name, array("Upload Final Covers", "Publish Book","Show All")) ) 
 	{ 
 		echo '<h4>Final Files</h4>';
 		if ( $custom_fields['book_final_manuscript_pdf'][0] != '' ) 
@@ -396,7 +396,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 	}
 
 	// when to show PFS Info
-	if ( in_array($pcr_name, array("Publication Fact Sheet (PFS)","Published","Show All")) ) 
+	if ( in_array($pcr_name, array("Publication Fact Sheet (PFS)","Publish Book","Published","Show All")) ) 
 	{ 
 		echo '<h4>Publication Fact Sheet</h4>';
 		echo ' Final Title: ' . $custom_fields['book_final_title'][0] . "<br/>";
@@ -416,7 +416,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo ' Cover Type: ' . $custom_fields['book_paperback_cover_type'][0] . "<br/>";
 	}
 	// when to show Cover Files
-	if ( in_array($pcr_name, array("Upload Cover Templates", "Publication Fact Sheet (PFS)", "Published", "Show All")) ) 
+	if ( in_array($pcr_name, array("Upload Cover Templates", "Publication Fact Sheet (PFS)", "Publish Book",  "Published", "Show All")) ) 
 	{ 
 		echo '<h4>Cover Files</h4>';
 		if ( $custom_fields['book_ebook_front_cover'][0] != '' ) 
