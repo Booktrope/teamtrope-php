@@ -485,7 +485,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	}
 	// when to show Page Count
-	if ( in_array($pcr_name, array("Upload Cover Concept", "Upload Cover Templates", "Request Image", "Upload Cover Templates", "Upload Final Manuscript", "Published", "Show All")) ) 
+	if ( in_array($pcr_name, array("Upload Cover Concept", "Upload Cover Templates", "Request Image", "Upload Cover Templates", "Final Manuscript", "Published", "Show All")) ) 
 	{ 
 		echo '<h4>Page Count</h4>';
 		if ( $custom_fields['book_final_page_count'][0] < 1 ) 
@@ -509,7 +509,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo ' Layout Notes: ' . $custom_fields['book_layout_notes'][0] . "<br/>";
 	} 
 	// when to show layout options
-	if ( in_array($pcr_name, array("Upload Layout", "Approve Layout", "Final Page Count", "Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Publication Fact Sheet (PFS)", "Upload Final Manuscript", "Show All")) ) 
+	if ( in_array($pcr_name, array("Upload Layout", "Approve Layout", "Final Page Count", "Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Publication Fact Sheet (PFS)", "Final Manuscript", "Show All")) ) 
 	{ 
 		echo '<h4>Layout Options</h4>';
 		echo ' Layout Style: ' . $custom_fields['book_layout_style_choice'][0] . "<br/>";
