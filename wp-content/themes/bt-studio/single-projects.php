@@ -573,7 +573,8 @@ function outputAssets($task, $task_custom, $custom_fields)
 			echo 'N/A' . "<br/>";;
 		}
 	}
-	if ( $pcr_name === "Submit Final Proofed Document" ) 
+	// when to show edited document
+	if ( $pcr_name === "Submit Proofread" ) 
 	{ 
 		echo '<h4>Manuscript</h4>';
 		if ( $custom_fields['book_manuscript_edited'][0] != '' ) {
