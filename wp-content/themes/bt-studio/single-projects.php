@@ -650,11 +650,14 @@ function outputTeamMembers($roles, $actors)
 	{
 		if ( $actor > 0 ) 
 		{
+
 			$my_roles = "";
+
 			if ( in_array($roles[$i], $roles_taken) ) 
 			{
 				// skip this one
 			} else {
+
 				// look through the rest of the array for same actor ID
 				for ( $j = $i + 1; $j <= count($actors); $j++ ) 
 				{
@@ -691,8 +694,8 @@ function outputTeamMembers($roles, $actors)
 					</div>
 				</li>
 <?php
-				$i++;
 			}
+			$i++;
 		}
 	}
 }	
