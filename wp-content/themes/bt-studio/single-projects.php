@@ -345,9 +345,10 @@ function outputProjectDetails($task, $task_custom, $custom_fields)
 	
 function outputAssets($task, $task_custom, $custom_fields) 
 {
-	$pcr_name = $custom_fields['book_pcr_step'][0];
+	$pcr_name = array($custom_fields['book_pcr_step'][0], $custom_fields['book_pcr_step_cover_design'][0],$custom_fields['book_pcr_step_mkt_info'][0]);
+
 	// when to show Published Files
-	if ( in_array($pcr_name, array("Published","Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Published","Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Published Files</h4>';
 		if ( $custom_fields['book_ebook_front_cover'][0] != '' ) 
@@ -378,7 +379,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 	}
 
 	// when to show Final Files						
-	if (  in_array($pcr_name, array("Upload Final Covers", "Publish Book","Show All")) ) 
+	if (  array_count_values(array_intersect($pcr_name, array("Upload Final Covers", "Publish Book","Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Final Files</h4>';
 		if ( $custom_fields['book_final_manuscript_pdf'][0] != '' ) 
@@ -396,7 +397,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 	}
 
 	// when to show PFS Info
-	if ( in_array($pcr_name, array("Publication Fact Sheet (PFS)","Publish Book","Published","Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Publication Fact Sheet (PFS)","Publish Book","Published","Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Publication Fact Sheet</h4>';
 		echo ' Final Title: ' . $custom_fields['book_final_title'][0] . "<br/>";
@@ -416,7 +417,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo ' Cover Type: ' . $custom_fields['book_paperback_cover_type'][0] . "<br/>";
 	}
 	// when to show Cover Files
-	if ( in_array($pcr_name, array("Upload Cover Templates", "Publication Fact Sheet (PFS)", "Publish Book",  "Published", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Upload Cover Templates", "Publication Fact Sheet (PFS)", "Publish Book",  "Published", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Cover Files</h4>';
 		if ( $custom_fields['book_ebook_front_cover'][0] != '' ) 
@@ -455,7 +456,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo 'Requested Image(s): ' .'<a href="' . wp_get_attachment_url($custom_fields['book_stock_cover_image'][0]) . '">DOWNLOAD</a>' . "<br/>";
 	}
 	// when to show requested image
-	if ( in_array($pcr_name, array("Approve Cover Art", "Upload Cover Templates", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Approve Cover Art", "Upload Cover Templates", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Stock Image Request</h4>';
 		if ( $pcr_name <> "Published" ) {
@@ -464,13 +465,14 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo ' Image Request: ' . $custom_fields['book_stock_image_request_link'][0] . "<br/>";
 	}
 	// when to show Cover Concept Notes
-	if ( in_array($pcr_name, array("Upload Cover Concept", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Upload Cover Concept", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Cover Concept Notes</h4>';
 		echo ' Cover Concept Notes: ' . $custom_fields['book_cover_concept_notes'][0] . "<br/>";
 	}
 	// when to show Cover Concept
-	if ( in_array($pcr_name, array("Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Show All")) ) 
+
+	if ( array_count_values(array_intersect($pcr_name, array("Upload Cover Concept", "Approve Cover", "Upload Cover Templates", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Cover Concept</h4>';
 		if ( $custom_fields['book_cover_concept'][0] != '' ) 
@@ -485,7 +487,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	}
 	// when to show Page Count
-	if ( in_array($pcr_name, array("Upload Cover Concept", "Upload Cover Templates", "Request Image", "Upload Cover Templates", "Final Manuscript", "Published", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Upload Cover Concept", "Upload Cover Templates", "Request Image", "Upload Cover Templates", "Final Manuscript", "Published", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Page Count</h4>';
 		if ( $custom_fields['book_final_page_count'][0] < 1 ) 
@@ -497,7 +499,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 	
 	}
 	// when to show Layout Sample
-	if ( $pcr_name === "Approve Layout" ) 
+	if ( in_array("Approve Layout",$pcr_name) ) 
 	{ 
 		echo '<h4>Proposed Layout</h4>';
 		if ( $custom_fields['book_layout_upload'][0] != '' ) 
@@ -509,7 +511,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo ' Layout Notes: ' . $custom_fields['book_layout_notes'][0] . "<br/>";
 	} 
 	// when to show layout options
-	if ( in_array($pcr_name, array("Upload Layout", "Approve Layout", "Final Page Count", "Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Publication Fact Sheet (PFS)", "Final Manuscript", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Upload Layout", "Approve Layout", "Final Page Count", "Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Publication Fact Sheet (PFS)", "Final Manuscript", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Layout Options</h4>';
 		echo ' Layout Style: ' . $custom_fields['book_layout_style_choice'][0] . "<br/>";
@@ -537,7 +539,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	} 
 	// when to show Proofed Document
-	if ( in_array($pcr_name, array("Choose Style", "Upload Layout", "Approve Layout", "Final Page Count", "Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Publication Fact Sheet (PFS)", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Choose Style", "Upload Layout", "Approve Layout", "Final Page Count", "Upload Cover Concept", "Approve Cover Art", "Upload Cover Templates", "Publication Fact Sheet (PFS)", "Show All"))) > 0 ) 
 	{ 
 		echo '<h4>Proofed Document</h4>';
 		if ( $custom_fields['book_has_sub-chapters'][0] == TRUE ) 
@@ -574,7 +576,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	}
 	// when to show edited document
-	if ( $pcr_name === "Submit Proofread" ) 
+	if ( in_array("Submit Proofread", $pcr_name) ) 
 	{ 
 		echo '<h4>Manuscript</h4>';
 		if ( $custom_fields['book_manuscript_edited'][0] != '' ) {
@@ -584,11 +586,11 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	} 
 	// when to show edit complete date
-	if ( in_array($pcr_name, array("Submit Edit Complete Date", "Submit Edited", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("Submit Edit Complete Date", "Submit Edited", "Show All"))) > 0 ) 
 	{
 		echo ' Edit Complete Date: ' . date('m-d-Y', strtotime($custom_fields['book_edit_complete_date'][0])) . "<br/>";
 	} 
-	if ( in_array($pcr_name, array("New Manuscript", "Edit Complete Date", "Submit Edited", "Show All")) ) 
+	if ( array_count_values(array_intersect($pcr_name, array("New Manuscript", "Edit Complete Date", "Submit Edited", "Show All"))) > 0 ) 
 	{ 	// when to show Original Manuscript
 		echo '<h4>Manuscript</h4>';
 		if ( $custom_fields['book_manuscript_original'][0] != '' ) 
