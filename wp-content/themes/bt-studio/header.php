@@ -15,7 +15,10 @@
 		<link rel="stylesheet" href="<?php bloginfo('stylesheet_url'); ?>" type="text/css" media="screen" />
 				<link rel="pingback" href="<?php bloginfo('pingback_url'); ?>" />
 				<link rel="icon" href="<?php bloginfo('stylesheet_directory');?>/favicon.ico" type="images/x-icon" />
-		<?php wp_head(); ?>
+		<?php 
+
+
+wp_head(); ?>
 		<?php
 			$slideshow = get_option('dev_studio_slideshow');{
 				if ($slideshow == "yes"){

@@ -222,17 +222,17 @@ function interface_headercontent_details() {
 											<ul>';
 		if ( !empty($options['social_phone'] )){ 
 		
-		$interface_footer_infoblog .= '<li class=' .'"phone-number"'. '><a title='. '"Call us"'.' '. 'href=' .'"tel:' ;
-		$interface_footer_infoblog .=  preg_replace("/[^0-9+-]/", '', $options[ 'social_phone' ]) ; 
+		$interface_footer_infoblog .= '<li class=' .'"phone-number"'. '><a title='.__( '" Call Us "').' '. 'href=' .'"tel:' ;
+		$interface_footer_infoblog .=  preg_replace("/[^() 0-9+-]/", '', $options[ 'social_phone' ]) ; 
 		
 		$interface_footer_infoblog .= '">';
-		$interface_footer_infoblog .=  preg_replace("/[^0-9+-]/", '', $options[ 'social_phone' ]) ;
+		$interface_footer_infoblog .=  preg_replace("/[^() 0-9+-]/", '', $options[ 'social_phone' ]) ;
 		$interface_footer_infoblog .= '</a></li>';
 		 
 				} if (!empty($options['social_email'] )){ 
 		
 		
-		$interface_footer_infoblog .='<li class=' .'"email"'. '><a title=' .'"Mail us"'. ' ' . 'href=' .'"mailto:';
+		$interface_footer_infoblog .='<li class=' .'"email"'. '><a title=' .__('" Mail Us "'). ' ' . 'href=' .'"mailto:';
 		$interface_footer_infoblog .=  is_email($options[ 'social_email'] );
 		$interface_footer_infoblog .='">';
 		$interface_footer_infoblog .=  is_email($options[ 'social_email'] ); 

@@ -136,15 +136,6 @@ function interface_theme_options_add_theme_page() {
     </h2>
   </div>
   <div class="theme_option_link"><a href="<?php echo esc_url( __( 'http://themehorse.com/', 'interface' ) ); ?>" title="<?php esc_attr_e( 'Theme Horse', 'interface' ); ?>" target="_blank"><img src="<?php echo INTERFACE_ADMIN_IMAGES_URL . '/theme-horse.png'; ?>" alt="'<?php _e( 'Theme Horse', 'interface' ); ?>" /></a> </div>
-  <div style="margin: 20px 20px 20px 0px; float:right; font-size: 13px; font-weight: bold;">
-    <?php _e( 'Confused about something? See', 'interface' ); ?>
-    <a href="<?php echo esc_url( 'http://themehorse.com/theme-instruction/interface/' ); ?>" title="<?php esc_attr_e( 'Interface Theme Instructions', 'interface' ); ?>" target="_blank">
-    <?php _e( 'Theme Instructions', 'interface' ); ?>
-    </a> &nbsp; | &nbsp; <a class="support" href="<?php echo esc_url( 'http://themehorse.com/support-forum/' ); ?>" title="<?php esc_attr_e( 'Support Forum', 'interface' ); ?>" target="_blank">
-    <?php _e( 'Support Forum', 'interface' ); ?>
-    </a> &nbsp; | &nbsp; <a class="demo" href="<?php echo esc_url( 'http://themehorse.com/preview/interface/' ); ?>" title="<?php esc_attr_e( 'Interface Demo', 'interface' ); ?>" target="_blank">
-    <?php _e( 'View Demo', 'interface' ); ?>
-    </a> </div>
 </div>
 <br/>
 <br/>
@@ -156,6 +147,18 @@ function interface_theme_options_add_theme_page() {
   <?php _e( 'Donate', 'interface' ); ?>
   </a> <a title="<?php esc_attr_e( 'Review Interface', 'interface' ); ?>" href="<?php echo esc_url( 'http://wordpress.org/support/view/theme-reviews/interface' ); ?>" target="_blank" class="review">
   <?php _e( 'Rate Interface', 'interface' ); ?>
+  </a>
+   <a href="<?php echo esc_url( 'http://themehorse.com/theme-instruction/interface/' ); ?>" title="<?php esc_attr_e( 'Interface Theme Instructions', 'interface' ); ?>" target="_blank" class="instruction">
+    <?php _e( 'Theme Instructions', 'interface' ); ?>
+  </a>
+  <a href="<?php echo esc_url( 'http://themehorse.com/support-forum/' ); ?>" title="<?php esc_attr_e( 'Support Forum', 'interface' ); ?>" target="_blank" class="support">
+    <?php _e( 'Support Forum', 'interface' ); ?>
+  </a>
+  <a href="<?php echo esc_url( 'http://themehorse.com/preview/interface/' ); ?>" title="<?php esc_attr_e( 'Interface Demo', 'interface' ); ?>" target="_blank" class="demo">
+    <?php _e( 'View Demo', 'interface' ); ?>
+  </a>
+  <a href="<?php echo esc_url( 'http://themehorse.com/themes/interface-pro/' ); ?>" title="<?php esc_attr_e( 'Upgrade to Pro', 'interface' ); ?>" target="_blank" class="upgrade">
+    <?php _e( 'Upgrade to Pro', 'interface' ); ?>
   </a>
   <div id="social-share">
     <div class="fb-like" data-href="https://www.facebook.com/themehorse" data-send="false" data-layout="button_count" data-width="90" data-show-faces="true"></div>
@@ -758,7 +761,7 @@ function interface_theme_options_add_theme_page() {
                 <th scope="row" style="padding: 0px;"><h4>
                     <?php _e( 'Phone Number', 'interface' ); ?>
                   </h4></th>
-                <td><input type="text" size="45" name="interface_theme_options[social_phone]" value="<?php echo  preg_replace("/[^0-9+-]/", '', $options[ 'social_phone' ]) ; ?>" />
+                <td><input type="text" size="45" name="interface_theme_options[social_phone]" value="<?php echo  preg_replace("/[^() 0-9+-]/", '', $options[ 'social_phone' ]) ; ?>" />
                   <?php _e('Enter your Phone number only', 'interface'); ?></td>
               </tr>
               <tr>
@@ -971,7 +974,7 @@ function interface_theme_options_validate( $options ) { //validate individual op
 		$validated_input_values[ 'disable_bottom' ] = $input[ 'disable_bottom' ];
 	}
    if ( isset( $input[ 'social_phone' ] ) ) {
-		$validated_input_values[ 'social_phone' ] = preg_replace("/[^0-9+-]/", '', $options[ 'social_phone' ]);
+		$validated_input_values[ 'social_phone' ] = preg_replace("/[^() 0-9+-]/", '', $options[ 'social_phone' ]);
 	}
 
 	if( isset( $input[ 'social_email' ] ) ) {

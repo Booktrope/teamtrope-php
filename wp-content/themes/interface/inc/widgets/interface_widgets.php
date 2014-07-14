@@ -557,14 +557,14 @@ class interface_Widget_Testimonial extends WP_Widget {
     <div class="testimonial-image"> <img src="<?php echo esc_url($image1)?>" title="<?php echo esc_attr($name1); ?>" alt="<?php echo esc_attr($name1); ?>" /> </div>
     <div class="testimonial-content">
       <p><?php echo esc_html( $text1 ); ?></p>
-      <div class="testimonial-meta"> <strong><?php echo esc_html( $name1 ); ?></strong> <?php echo esc_html( $designation1 );  echo '-'; ?> <a href="<?php echo esc_url($company_link1); ?>" title="<?php echo $company_name1; ?>" target="_blank"> <?php echo esc_html( $company_name1 ); ?></a> </div>
+      <div class="testimonial-meta"> <strong><?php echo esc_html( $name1 ); ?></strong> <?php echo esc_html( $designation1 ); if(!empty($company_name1)){  echo ' - '; } ?> <a href="<?php echo esc_url($company_link1); ?>" title="<?php echo $company_name1; ?>" target="_blank"> <?php echo esc_html( $company_name1 ); ?></a> </div>
     </div>
   </div>
   <div class="one-half">
     <div class="testimonial-image"> <img src="<?php echo esc_url($image2);?>" title="<?php echo esc_attr($name2); ?>" alt="<?php echo esc_attr($name2); ?>"/> </div>
     <div class="testimonial-content">
       <p><?php echo esc_html( $text2 ); ?></p>
-      <div class="testimonial-meta"> <strong><?php echo esc_html( $name2 ); ?></strong> <?php echo esc_html( $designation2 );  echo '-';?> <a href="<?php echo esc_url($company_link2); ?>" title="<?php echo $company_name2; ?>" target="_blank"> <?php echo esc_html( $company_name2 ); ?></a> </div>
+      <div class="testimonial-meta"> <strong><?php echo esc_html( $name2 ); ?></strong> <?php echo esc_html( $designation2 ); if(!empty($company_name2)){ echo ' - '; } ?> <a href="<?php echo esc_url($company_link2); ?>" title="<?php echo $company_name2; ?>" target="_blank"> <?php echo esc_html( $company_name2 ); ?></a> </div>
     </div>
   </div>
 </div>
@@ -768,11 +768,19 @@ class interface_featured_image_widget extends WP_Widget {
  			$var = 'path'.$i;
  			$var1 = 'redirectlink'.$i;
  			$path = isset( $instance[ $var ] ) ? $instance[ $var ] : '';
- 			$redirectlink = isset( $instance[ $var1 ] ) ? $instance[ $var1 ] : ''; 			
- 			if( !empty( $path ) )
- 				array_push( $path_array, $path ); // Push the page id in the array
- 			if( !empty( $redirectlink ) )
- 				array_push( $redirectlink_array, $redirectlink ); // Push the page id in the array
+ 			$redirectlink = isset( $instance[ $var1 ] ) ? $instance[ $var1 ] : '';
+ 			if( !empty( $path )  || !empty( $redirectlink ))  {			
+	 			if( !empty( $path ) ){
+	 				array_push( $path_array, $path ); // Push the page id in the array
+	 			}else{
+		 			array_push($path_array, "");
+	 			}
+	 			if( !empty( $redirectlink ) ){
+	 				array_push( $redirectlink_array, $redirectlink ); // Push the page id in the array
+	 			}else{
+		 			array_push($redirectlink_array, "");
+	 			}
+ 			}
  		}
 
 		echo $before_widget;
@@ -784,22 +792,17 @@ class interface_featured_image_widget extends WP_Widget {
 			$output .= '<div class="container">';
 			$output .= '<ul>';
 			for( $i=0; $i<$number; $i++ ) {
-				$output .= '<li>';
-				if( !empty( $redirectlink_array[$i] ) ) {
+				if( !empty( $redirectlink_array[$i] ) || !empty($path_array[$i] )) {
+					$output .= '<li>';
 					$output .= '<a href="'.$redirectlink_array[$i].'" title="'.$title.'" target="_blank">
 										<img src="'.$path_array[$i].'" alt="'.$title.'">
 									</a>';
+					$output .=	'</li>';
 				}
-				else {
-					$output .= '<img src="'.$path_array[$i].'" alt="'.$title.'">';
-				}
-									
-				$output .=	'</li>';
 			}
-			$output .= '</ul>';
-			
-			$output .= '</div>';
-			echo $output;
+					$output .= '</ul>';
+					$output .= '</div>';
+					echo $output;
 		}
 		
 		echo $after_widget;

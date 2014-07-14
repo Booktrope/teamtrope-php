@@ -567,11 +567,11 @@ border: 5px solid #444444;
 .needs {
 color:#000;
 background:none;
-float:left; 
-width:auto;
+display:block;
 }
 .needs li {
-display:inline;
+float:left; 
+display:block;
 padding:10px;
 margin:5px;
 }
@@ -596,6 +596,28 @@ margin:5px;
 	background:#8B7A6A;
 	text-shadow: none;
 }
+
+.pcss3t label.yellow {
+	background:#F0D818;
+	text-shadow: none;
+}
+.pcss3t label.green {
+	background:#AED991;
+	text-shadow: none;
+}
+.pcss3t label.red {
+	background:#E6583E;
+	text-shadow: none;
+}
+.pcss3t label.blue {
+	background:#1394BB;
+	text-shadow: none;
+}
+.pcss3t label.brown {
+	background:#8B7A6A;
+	text-shadow: none;
+}
+
 /* add popup tool tip for grid status updates, etc. */
 .tooltip {
 	border-bottom: 1px dotted #000000; color: #000000; outline: none;

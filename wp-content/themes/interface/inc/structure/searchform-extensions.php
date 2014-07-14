@@ -22,7 +22,7 @@ function interface_display_searchform() {
     <?php _e( 'Search', 'interface' ); ?>
   </label>
   <input type="search" placeholder="<?php esc_attr_e( 'Search', 'interface' ); ?>" class="s field" name="s">
-  <input type="submit" value="Search" class="search-submit">
+  <input type="submit" value="<?php esc_attr_e( 'Search', 'interface' ); ?>" class="search-submit">
 </form>
 <!-- .search-form -->
 <?php

@@ -129,15 +129,18 @@ function interface_theloop_for_archive() {
 		  		}
 	  			?>
     <header class="entry-header">
+      <?php if (get_the_author() !=''){?>
       <div class="entry-meta"> <span class="cat-links">
         <?php the_category(', '); ?>
         </span><!-- .cat-links --> 
       </div>
+      <?php } ?>
       <!-- .entry-meta -->
       <h1 class="entry-title"> <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute();?>">
         <?php the_title();?>
         </a> </h1>
       <!-- .entry-title -->
+       <?php if (get_the_author() !=''){?>
       <div class="entry-meta clearfix">
         <div class="by-author"><a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" 
                         title="<?php  esc_attr(the_author()); ?>">
@@ -171,6 +174,10 @@ function interface_theloop_for_archive() {
 						?>
     </footer>
     <!-- .entry-meta --> 
+     <?php } else { ?>
+   </header>
+		    <?php the_content();
+      } ?>
   </article>
 </section>
 <!-- .post -->
@@ -283,11 +290,13 @@ function interface_theloop_for_single() {
 		  		}
 	  			?>
     <header class="entry-header">
+      <?php if(get_the_time( get_option( 'date_format' ) )) { ?>
       <div class="entry-meta"> <span class="cat-links">
         <?php the_category(', '); ?>
         </span><!-- .cat-links --> 
       </div>
       <!-- .entry-meta -->
+     
       <h1 class="entry-title">
         <?php the_title();?>
       </h1>
@@ -308,6 +317,7 @@ function interface_theloop_for_single() {
       <!-- .entry-meta --> 
     </header>
     <!-- .entry-header -->
+    <?php } ?>
     <div class="entry-content clearfix">
       <?php the_content();
     		
@@ -321,6 +331,10 @@ function interface_theloop_for_single() {
                ) );
                ?>
     </div>
+    <?php if(get_the_time( get_option( 'date_format' ) )) { ?>
+  </header>
+  <?php } ?>
+
     <!-- entry content clearfix -->
     
     <?php if( is_single() ) {

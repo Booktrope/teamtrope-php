@@ -62,9 +62,66 @@ function outputProjectHead($custom_fields)
 	?>
 	<br/><h2 class="pagetitle"><?php the_title(); ?></h2>
 	<?php	
+
+
+	$needs_list = array();
+	$user_info = get_userdata($custom_fields['book_marketing_manager'][0]); 
+	if (!is_object($user_info)) {
+		$needs_list[] = "<label class='green'>" . "Book Manager" . "</label>";
+	} else {
+		$needs_list[] = outputTeamMember ( $user_info, "green" );
+	}
+	
+	$user_info = get_userdata($custom_fields['book_project_manager'][0]); 
+	if (!is_object($user_info)) {
+		$needs_list[] = "<label class='yellow'>" . "Project Manager" . "</label>";
+	} else {
+		$needs_list[] = outputTeamMember ( $user_info, "yellow" );
+	}
+	$user_info = get_userdata($custom_fields['book_editor'][0]); 
+	if (!is_object($user_info)) {
+		$needs_list[] = "<label class='red'>" . "Editor" . "</label>";
+	} else {
+		$needs_list[] = outputTeamMember ( $user_info, "red" );
+	}
+	
+	$user_info = get_userdata($custom_fields['book_proofreader'][0]); 
+	if (!is_object($user_info)) {
+		$needs_list[] = "<label class='red'>" . "Proofreader" . "</label>";
+	} else {
+		$needs_list[] = outputTeamMember ( $user_info, "red" );
+	}
+
+	$user_info = get_userdata($custom_fields['book_cover_designer'][0]); 
+	if (!is_object($user_info)) {
+		$needs_list[] = "<label class='blue'>" . "Designer" . "</label>";
+	} else {
+		$needs_list[] = outputTeamMember ( $user_info, "blue" );
+	}
+
+	//if ( count($needs_list) > 0 ) { 
+	?>
+			<div class="pcss3t pcss3t-icons-left  pcss3t-height-auto pcss3t-theme-3-white">			
+				<label>Needs: </label>					
+	<?php
+		foreach ( $needs_list as $need ) {
+			echo $need;
+		}
+	?><?php
+//		} else {
+		//echo "<h4>&nbsp;</h4>";
+//	}   
+	echo "</div>";
+
+	if ( isset($custom_fields['book_teamroom_link'][0]) && $custom_fields['book_teamroom_link'][0] != "" ) {
+		echo "<br/><a href='" . $custom_fields['book_teamroom_link'][0] . "'>Link to Teamroom</a>";
+	} else {
+			echo "<br/><h4><a href='/groups/?tree'>Go to Teamrooms List</a></h4>";
+	} 
+	
 	$taxonomy = "genres";
 	$sep = "";
-	echo "<ul class='needs'><li>Genre: ";
+	echo " Genre: ";
 
 	//echo "<h4>";
 	foreach ( unserialize($custom_fields['book_genre'][0]) as $term_id ) {
@@ -72,53 +129,11 @@ function outputProjectHead($custom_fields)
 		echo $sep . $term->name;
 		$sep = ", ";
 	}
-	echo "</li></ul><br/><br/>";
+//	echo "</li></ul>";
 
 	$terms_as_text = get_the_term_list( $this_id, 'status', '', ', ', '' ) ;
 	$status_value = ( explode(',',strip_tags($terms_as_text) . ',EndOfList' ) ); 
-	
 
-	$needs_list = array();
-	$user_info = get_userdata($custom_fields['book_marketing_manager'][0]); 
-	if (!is_object($user_info)) {
-		$needs_list[] = "<li class='green'>" . "Book Manager" . "</li>";
-	}
-	
-	$user_info = get_userdata($custom_fields['book_project_manager'][0]); 
-	if (!is_object($user_info)) {
-		$needs_list[] = "<li class='yellow'>" . "Project Manager" . "</li>";
-	}
-	$user_info = get_userdata($custom_fields['book_editor'][0]); 
-	if (!is_object($user_info)) {
-		$needs_list[] = "<li class='red'>" . "Editor" . "</li>";
-	}
-	$user_info = get_userdata($custom_fields['book_proofreader'][0]); 
-	if (!is_object($user_info)) {
-		$needs_list[] = "<li class='red'>" . "Proofreader" . "</li>";
-	}
-
-	$user_info = get_userdata($custom_fields['book_cover_designer'][0]); 
-	if (!is_object($user_info)) {
-		$needs_list[] = "<li class='blue'>" . "Designer" . "</li>";
-	}
-
-	if ( count($needs_list) > 0 ) { ?>
-			<ul class="needs">			
-				<li>Needs: </li>					
-	<?php
-		foreach ( $needs_list as $need ) {
-			echo $need;
-		}
-	?></h4><?php
-		} else {
-		//echo "<h4>&nbsp;</h4>";
-	}   
-	echo "</ul><br/>";
-	if ( isset($custom_fields['book_teamroom_link'][0]) && $custom_fields['book_teamroom_link'][0] != "" ) {
-		echo "<br/><a href='" . $custom_fields['book_teamroom_link'][0] . "'>Link to Teamroom</a><br/>";
-	} else {
-			echo "<br/><h4><a href='/groups/?tree'>Go to Teamrooms List</a></h4>\n\r";
-	} 
 }
 
 function getProjectPhases() {
@@ -701,6 +716,18 @@ function outputTeamMembers($roles, $actors)
 		}
 	}
 }	
+
+function outputTeamMember ( $user_info, $class )
+{
+	$user_home = bp_core_get_user_domain( $user_info->id );
+	$avatarurl = bp_core_fetch_avatar( "item_id=" . $user_info->id ."&type=full&width=40&height=40" . " alt='Profile picture of ". $user_info->display_name . "'");
+	$item = "<label class='". $class . "'>";
+//	$item .= "<div class='item-avatar'>";
+	$item .= "<a href='" . $user_home . "'>" . $avatarurl . "</a>";
+//	$item .= "</div>";
+	$item .= "</label>";
+	return $item;
+}
 	
 function outputAnalytics($task, $task_custom, $custom_fields) 
 {

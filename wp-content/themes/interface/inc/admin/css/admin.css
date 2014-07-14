@@ -126,20 +126,17 @@ h3.option-toggle a:hover, h3.option-active a {
 	-moz-opacity: 10;
 	filter:alpha(opacity=100);
 }
-a.upgrade { 
+a.upgrade,
+a.instruction { 
 	background-color: #0074A2;
 }
-a.donate {
+a.donate,
+a.support {
 	background-color: #E1980F;
 }
-a.review {
-	background-color: #46A314;
-}
+a.review,
 a.demo {
-	color: #46A314;
-}
-a.support {
-	color: #E1980F;
+	background-color: #46A314;
 }
 #social-share {
 	bottom: 42px;
