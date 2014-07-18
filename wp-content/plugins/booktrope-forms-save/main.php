@@ -58,9 +58,9 @@ function btfs_set_post_content($entry, $form)
 	// get the next step info from the PCR, not the form
 	
 	$pcr_data = btfs_get_pcr_data_by_form_name($formName, $values["step_approved"]);
-	
+
 	//if it's a process step, we update the project to the new step.
-	if($pcr_data["is_process_step"])
+	if( $pcr_data["is_process_step"] == 1 )
 	{
 		$pcr_name = $pcr_data["cur_pcr_name"];
 		if($pcr_data['is_approval_step'] && !$values["step_approved"])
@@ -571,12 +571,12 @@ function btfs_get_pcr_data_by_form_name($formName, $approved)
 	$status_array = preg_split('/,/', strip_tags($status_as_text), -1, PREG_SPLIT_NO_EMPTY);
 	$result["next_status"] = $status_array[0];
 
-	if($pcr_custom["pcr_is_process_step"][0] == 1) 
+	if($pcr_custom["pcr_is_process_step"] == 1) 
 	{
 		$result["is_process_step"] = true;
 		$result["pcr_workflow"] = $pcr_custom["pcr_workflow"][0];
 	}
-	if(isset($pcr_custom["pcr_is_approval_step"]) && $pcr_custom["pcr_is_approval_step"][0] == 1)
+	if(isset($pcr_custom["pcr_is_approval_step"]) && $pcr_custom["pcr_is_approval_step"] == 1)
 	{
 		$result["is_approval_step"] = true;
 	}
