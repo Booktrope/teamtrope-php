@@ -71,7 +71,7 @@ function btfs_set_post_content($entry, $form)
 		btfs_set_status_values ($book, $pcr_data);
 		btfs_add_or_update_meta($book->ID, 'book_pcr_step_date', date("Ymd"));
 	}
-	
+
    switch($formName)
    {
    case "Book Submission":
@@ -126,6 +126,11 @@ function btfs_set_post_content($entry, $form)
 		btfs_add_or_update_meta($book->ID, 'book_designer_pct', $values["Designer Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_proofreader_pct', $values["Proofreader Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_other_pct', $values["Revenue Percentage for Other"]);
+		break;
+	case "Original Manuscript":
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $pcr_name);
+error_log(print_r($values["Original Manuscript"], true));	
+		btfs_save_attachment_into_book($book->ID, 'book_manuscript_original', $values["Original Manuscript"]);	   
 		break;
 	case "Editing Complete Date":
 		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 23, $pcr_name);
