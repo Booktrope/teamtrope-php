@@ -21,3 +21,19 @@ http://www.opensource.org/licenses/gpl-license.php
 
 
 /* 259000-1377407246-ai */
+
+
+.pcss3t-theme-3-all-white {
+	background: #fff;	
+}
+
+div.pcss3t.pcss3t-theme-3-all-white > label {
+	color: #333;
+	vertical-align: top;
+	min-height: 60px;
+	line-height: 60px;
+}
+.pcss3t-theme-3-all-white img.avatar {
+	padding: 10px 0px;0px 0px;
+	float: left;
+}

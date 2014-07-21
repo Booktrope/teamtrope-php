@@ -101,7 +101,7 @@ function outputProjectHead($custom_fields)
 
 	//if ( count($needs_list) > 0 ) { 
 	?>
-			<div class="pcss3t pcss3t-icons-left  pcss3t-height-auto pcss3t-theme-3-white">			
+			<div class="pcss3t pcss3t-icons-left  pcss3t-height-auto pcss3t-theme-3-all-white">			
 				<label>Needs: </label>					
 	<?php
 		foreach ( $needs_list as $need ) {
