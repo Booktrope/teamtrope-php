@@ -60,6 +60,9 @@ function btfs_set_post_content($entry, $form)
 	$pcr_data = btfs_get_pcr_data_by_form_name($formName, $values["step_approved"]);
 
 	//if it's a process step, we update the project to the new step.
+//error_log(print_r("is_process_step", true));	
+//error_log(print_r($pcr_data, true));	
+
 	if( $pcr_data["is_process_step"] == 1 )
 	{
 		$pcr_name = $pcr_data["cur_pcr_name"];
@@ -78,7 +81,7 @@ function btfs_set_post_content($entry, $form)
    	btfs_create_status_entry($formObj, $book, $entryId, $userId, $values["Type of update"], $pcr_data["status"], 75, $values["Status"]);
    	break;
    case "Update Project Status":
-	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $pcr_name);	
+	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $cur_pcr_name);	
 	btfs_add_or_update_meta($book->ID, 'book_status_update_date', date("Ymd"));		
 	btfs_add_or_update_meta($book->ID, 'book_status_update', $values["Status"]);
 	btfs_add_or_update_meta($book->ID, 'book_status_update_by', $values["Teamtrope ID"]);
@@ -86,16 +89,16 @@ function btfs_set_post_content($entry, $form)
 	break;
 
    case "Early Reader Book Feedback":
-   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $pcr_name);
+   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $cur_pcr_name);
    	break;
    case "Project Interest Sign-Up":
-   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $pcr_name);
+   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $cur_pcr_name);
    	break;
    case "Invite Team Member":
-   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $pcr_name);
+   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $cur_pcr_name);
    	break;
    case "Accept Team Member":
-   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $pcr_name);
+   	btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $cur_pcr_name);
 		
 		$member_fieldnames = array(
 			'Editor' => 'book_editor',
@@ -108,7 +111,7 @@ function btfs_set_post_content($entry, $form)
 		btfs_add_or_update_meta($book->ID, $member_fieldnames[$values["Team Role"]], $values["New Team Member"]);
    	break;
 	case "1099 Form Info":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 75, $cur_pcr_name);
 		break;
 	case "Project Revenue Allocation":
 		if (is_plugin_active('asana-revenue-allocation/main.php'))
@@ -117,7 +120,7 @@ function btfs_set_post_content($entry, $form)
 			add_task_to_asana($the_form_id, $entry);
 		}
 		
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 102, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 102, $cur_pcr_name);
 		
 		btfs_add_or_update_meta($book->ID, 'book_author_pct', $values["Author Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_manager_pct', $values["Book Manager Percentage"]);
@@ -128,17 +131,17 @@ function btfs_set_post_content($entry, $form)
 		btfs_add_or_update_meta($book->ID, 'book_other_pct', $values["Revenue Percentage for Other"]);
 		break;
 	case "Original Manuscript":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $pcr_name);
-error_log(print_r($values["Original Manuscript"], true));	
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $cur_pcr_name);
+
 		btfs_save_attachment_into_book($book->ID, 'book_manuscript_original', $values["Original Manuscript"]);	   
 		break;
 	case "Editing Complete Date":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 23, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 23, $cur_pcr_name);
 		
 		btfs_add_or_update_meta($book->ID, 'book_edit_complete_date', date("Ymd", strtotime($values["Editing Complete Committed Date"])));		
 		break;
 	case "Submit Edited Manuscript":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $cur_pcr_name);
 	   
 		btfs_save_attachment_into_book($book->ID, 'book_manuscript_edited', $values["Final Manuscript"]);	   
 		btfs_add_or_update_meta($book->ID, 'book_childrens_book', $values["Children's book"]);
@@ -147,7 +150,7 @@ error_log(print_r($values["Original Manuscript"], true));
 		btfs_add_or_update_meta($book->ID, 'book_has_internal_illustrations', $values["My book has illustrations or images inserted throughout"]);
 		break;
 	case "Submit Final Proofed Document":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $cur_pcr_name);
 	   
 		btfs_save_attachment_into_book($book->ID, 'book_manuscript_proofed', $values["Final Manuscript"]);	   
 		btfs_add_or_update_meta($book->ID, 'book_has_sub-chapters', $values["Does your book contain sub-chapters?"]);
@@ -157,13 +160,13 @@ error_log(print_r($values["Original Manuscript"], true));
   	  	btfs_add_or_update_meta($book->ID, 'book_prev_publisher_and_date',	$values["Year and Publisher"]); //new
 		break;
 	case "Upload Final Document":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Approve Final Document":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Select Layout Style":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 	   btfs_add_or_update_meta($book->ID, 'book_layout_style_choice', $values["Select your Inside Book Title and Chapter font"]);
 	   btfs_add_or_update_meta($book->ID, 'book_use_pen_name_on_title', $values["Are you using a pen name on the title?"]);
@@ -172,44 +175,44 @@ error_log(print_r($values["Original Manuscript"], true));
 	   btfs_add_or_update_meta($book->ID, 'book_exact_name_on_copyright', $values["What is the exact name you want to appear on the copyright?"]);
 		break;
 	case "Layout Upload":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 	   btfs_add_or_update_meta($book->ID, 'book_layout_notes', $values["Layout Info"]);
 		btfs_save_attachment_into_book($book->ID, 'book_layout_upload', $values["Layout File"]);
 		break;
 	case "Approve Layout":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 	   btfs_add_or_update_meta($book->ID, 'book_layout_approved_date', date("Ymd", time()));
 		break;
 	case "Final Page Count":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 
 	   btfs_add_or_update_meta($book->ID, 'book_final_page_count', $values["Page Count"]);
 		break;
 	case "Upload eBook Files":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Add Image":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 		btfs_save_attachment_into_book($book->ID, 'book_stock_cover_image', $values["Stock Cover Image"]);
 		break;
 	case "Upload Cover Concept":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 
 		btfs_save_attachment_into_book($book->ID, 'book_cover_concept', $values["Cover Concept"]);
 		break;
 	case "Approve Cover Art":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 
 		btfs_add_or_update_meta($book->ID, 'book_cover_concept_notes', $values["Cover Concept Notes"]);
 		btfs_add_or_update_meta($book->ID, 'book_cover_art_approval_date', date("Ymd"));
 		break;		
 	case "eBook Final Review":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Upload Cover Templates":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 		btfs_save_attachment_into_book($book->ID, 'book_ebook_front_cover', $values["Front Cover File"]);
 		btfs_save_attachment_into_book($book->ID, 'book_createspace_cover', $values["CreateSpace Cover Template File"]);
@@ -217,7 +220,7 @@ error_log(print_r($values["Original Manuscript"], true));
 		btfs_save_attachment_into_book($book->ID, 'book_alternative_cover_template', $values["Alternative Template File"]);	   
 		break;
 	case "Publication Fact Sheet (PFS)":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 	   btfs_add_or_update_meta($book->ID, 'book_final_title', $values["Final Title"]);
 	   btfs_add_or_update_meta($book->ID, 'book_series_name', $values["Series Name"]);
@@ -236,7 +239,7 @@ error_log(print_r($values["Original Manuscript"], true));
 	   btfs_add_or_update_meta($book->ID, 'book_paperback_cover_type', $values['Do you want your paperback cover to be matte or glossy?']);
 		break;
 	case "Apply for Rush Production":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 
 	   btfs_add_or_update_meta($book->ID, 'book_production_exception', $values["Job Title"]);
 	   btfs_add_or_update_meta($book->ID, 'book_production_exception_approver', $values["Exception Request by"]);
@@ -244,13 +247,13 @@ error_log(print_r($values["Original Manuscript"], true));
 	   btfs_add_or_update_meta($book->ID, 'book_production_exception_date', date("Ymd", strtotime($values["Date Needed"])));
 		break;
 	case "Final Manuscript":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		btfs_add_or_update_meta($book->ID, 'book_publication_date', date("Ymd", strtotime($values["Publication Date"])));
 		btfs_save_attachment_into_book($book->ID, 'book_final_manuscript_pdf', $values["Final PDF"]);
 		btfs_save_attachment_into_book($book->ID, 'book_final_doc_file', $values["Final Word Doc"]);
 		break;
 	case "Publish Book":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 	   btfs_add_or_update_meta($book->ID, 'book_publication_date', date("Ymd", strtotime($values["Publication Date"])));
 		btfs_save_attachment_into_book($book->ID, 'book_final_mobi', $values[".mobi File"]);
@@ -258,21 +261,21 @@ error_log(print_r($values["Original Manuscript"], true));
 		btfs_save_attachment_into_book($book->ID, 'book_final_pdf', $values["Final PDF"]);
 		break;
 	case "Release Date":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 	   btfs_add_or_update_meta($book->ID, 'book_marketing_release_date', date("Ymd", strtotime($values["Planned Marketing Release Date*"])));
 		break;
 	case "Media Kit":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Print Corner":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Blog Tour":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		break;
 	case "Free/Price Promo":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 		if(defined('WP_PARSE_API_PATH'))
 		{
@@ -299,7 +302,7 @@ error_log(print_r($values["Original Manuscript"], true));
 		}
 		break;
 	case "Control Numbers":
-		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $pcr_name);
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
 		btfs_add_or_update_meta($book->ID, 'book_asin', $values["asin"]);
 		btfs_add_or_update_meta($book->ID, 'book_apple_id', $values["apple_id"]);
@@ -537,6 +540,8 @@ function btfs_get_pcr_data_by_form_name($formName, $approved)
 		'pcr_workflow'		=> '',
 		'status'			=> ''
 	);
+//error_log(print_r("pcr_custom", true));	
+//error_log(print_r($pcr_custom, true));	
 
 	// not a process step? we're done.
 	if($pcr_custom["pcr_is_process_step"][0] <> 1) 
@@ -545,7 +550,10 @@ function btfs_get_pcr_data_by_form_name($formName, $approved)
 		{
 			$result["cur_pcr_name"] = $pcr->title;
 		}
+		$result["is_process_step"] = 0;
 		return $result;
+	} else {
+		$result["is_process_step"] = 1;
 	}
 
 	$the_next_step = $pcr_custom["pcr_next_step"][0]; //standard next step, step forward in the workflow
@@ -576,7 +584,7 @@ function btfs_get_pcr_data_by_form_name($formName, $approved)
 	$status_array = preg_split('/,/', strip_tags($status_as_text), -1, PREG_SPLIT_NO_EMPTY);
 	$result["next_status"] = $status_array[0];
 
-	if($pcr_custom["pcr_is_process_step"] == 1) 
+	if($pcr_custom["pcr_is_process_step"][0] == 1) 
 	{
 		$result["is_process_step"] = true;
 		$result["pcr_workflow"] = $pcr_custom["pcr_workflow"][0];
