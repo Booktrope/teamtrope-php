@@ -67,34 +67,34 @@ function outputProjectHead($custom_fields)
 	$needs_list = array();
 	$user_info = get_userdata($custom_fields['book_marketing_manager'][0]); 
 	if (!is_object($user_info)) {
-		$needs_list[] = "<label class='green'>" . "Book Manager" . "</label>";
+		$needs_list[] = "<label class='green'>" . "Needs Book Manager" . "</label>";
 	} else {
 		$needs_list[] = outputTeamMember ( $user_info, "green" );
 	}
 	
 	$user_info = get_userdata($custom_fields['book_project_manager'][0]); 
 	if (!is_object($user_info)) {
-		$needs_list[] = "<label class='yellow'>" . "Project Manager" . "</label>";
+		$needs_list[] = "<label class='yellow'>" . "Needs Project Manager" . "</label>";
 	} else {
 		$needs_list[] = outputTeamMember ( $user_info, "yellow" );
 	}
 	$user_info = get_userdata($custom_fields['book_editor'][0]); 
 	if (!is_object($user_info)) {
-		$needs_list[] = "<label class='red'>" . "Editor" . "</label>";
+		$needs_list[] = "<label class='red'>" . "Needs Editor" . "</label>";
 	} else {
 		$needs_list[] = outputTeamMember ( $user_info, "red" );
 	}
 	
 	$user_info = get_userdata($custom_fields['book_proofreader'][0]); 
 	if (!is_object($user_info)) {
-		$needs_list[] = "<label class='red'>" . "Proofreader" . "</label>";
+		$needs_list[] = "<label class='red'>" . "Needs Proofreader" . "</label>";
 	} else {
 		$needs_list[] = outputTeamMember ( $user_info, "red" );
 	}
 
 	$user_info = get_userdata($custom_fields['book_cover_designer'][0]); 
 	if (!is_object($user_info)) {
-		$needs_list[] = "<label class='blue'>" . "Designer" . "</label>";
+		$needs_list[] = "<label class='blue'>" . "Needs Designer" . "</label>";
 	} else {
 		$needs_list[] = outputTeamMember ( $user_info, "blue" );
 	}
@@ -102,7 +102,7 @@ function outputProjectHead($custom_fields)
 	//if ( count($needs_list) > 0 ) { 
 	?>
 			<div class="pcss3t pcss3t-icons-left  pcss3t-height-auto pcss3t-theme-3-all-white">			
-				<label>Needs: </label>					
+				<label>Team: </label>					
 	<?php
 		foreach ( $needs_list as $need ) {
 			echo $need;
