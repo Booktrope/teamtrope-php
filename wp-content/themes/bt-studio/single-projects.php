@@ -308,6 +308,9 @@ function outputCustomTaskCode($task, $task_custom, $custom_fields)
 		case "Analytics":
 			outputAnalytics($task, $task_custom, $custom_fields);
 			break;
+		case "Revenue Split":
+			outputRevenueSplit($task, $task_custom, $custom_fields);
+			break;
 	}
 	
 }
@@ -616,7 +619,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	}
 }
-	
+
 function outputTeam($task, $task_custom, $custom_fields) 
 {
 ?>
@@ -657,7 +660,7 @@ function outputTeam($task, $task_custom, $custom_fields)
 </div>
 <?		
 }
-		
+
 function outputTeamMembers($roles, $actors) 
 {
 	$roles_taken = array();
@@ -767,3 +770,98 @@ function outputAnalytics($task, $task_custom, $custom_fields)
 		}
 	}
 }
+
+function outputRevenueSplit($task, $task_custom, $custom_fields) 
+{
+?>
+	<?php $authors = unserialize($custom_fields['book_author'][0]);
+?>
+<div id="left">
+<ul>
+<?php
+	$size = "60";
+	$roles = array();
+	$actors = array();
+// load roles and actors
+	foreach ( $authors as $author ) 
+	{
+		$user_info = get_userdata($author); 
+		$roles[] = "Author";
+		$actors[] = $user_info->id;
+	}
+	$roles[] = "Book Manager";
+	$actors[] = $custom_fields['book_marketing_manager'][0];
+
+	$roles[] = "Project Manager";
+	$actors[] = $custom_fields['book_project_manager'][0];
+	
+	$roles[] = "Editor";
+	$actors[] = $custom_fields['book_editor'][0];
+
+	$roles[] = "Proofreader";
+	$actors[] = $custom_fields['book_proofreader'][0];
+
+	$roles[] = "Cover Designer";
+	$actors[] = $custom_fields['book_cover_designer'][0];
+	
+	outputTeamList($roles, $actors); 
+?>
+</ul>
+</div>
+<div id="right">
+<?php
+	echo do_shortcode('[gravityform name="Project Revenue Allocation" title=false description=false ajax="true"]'); 
+?>
+</div>
+<?php
+}
+
+function outputTeamList($roles, $actors) 
+{
+	$roles_taken = array();
+	$my_roles = "";
+	$i = 0;
+	foreach ($actors as $actor) 
+	{
+		if ( $actor > 0 ) 
+		{
+
+			$my_roles = "";
+
+			if ( in_array($roles[$i], $roles_taken) ) 
+			{
+				// skip this one
+			} else {
+
+				// look through the rest of the array for same actor ID
+				for ( $j = $i + 1; $j <= count($actors); $j++ ) 
+				{
+					if ( $actors[$j] == $actor ) 
+					{
+						$roles_taken[] = $roles[$j];
+						if ( $my_roles == "" ) 
+						{
+							$my_roles = $roles[$i] . ", " . $roles[$j];
+						} else {
+							$my_roles .= ", " . $roles[$j];
+						}
+					} 
+				}
+				if ($my_roles == "") 
+				{ 
+					$my_roles = $roles[$i];
+				}
+				
+				$user_info = get_userdata($actor); 
+				$user_home = bp_core_get_user_domain( $user_info->id );			
+?>
+				<li>
+					<strong><?php echo $my_roles; ?>:</strong> <?php echo $user_info->display_name; ?>
+					<?php // echo $user_info->user_email; ?>
+				</li>
+<?php
+			}
+			$i++;
+		}
+	}
+}	

@@ -37,3 +37,13 @@ div.pcss3t.pcss3t-theme-3-all-white > label {
 	padding: 10px 0px;0px 0px;
 	float: left;
 }
+
+
+#left {
+	float:left;
+	width:50%;
+	overflow:hidden;
+}
+#right {
+	overflow:hidden;
+}
