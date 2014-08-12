@@ -823,8 +823,8 @@ function outputTeamList($roles, $actors)
 	$i = 0;
 	foreach ($actors as $actor) 
 	{
-		if ( $actor > 0 ) 
-		{
+//		if ( $actor > 0 ) 
+//		{
 
 			$my_roles = "";
 
@@ -862,6 +862,6 @@ function outputTeamList($roles, $actors)
 <?php
 			}
 			$i++;
-		}
+//		}
 	}
 }	
