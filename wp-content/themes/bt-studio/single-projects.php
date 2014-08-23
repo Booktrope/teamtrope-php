@@ -99,6 +99,21 @@ function outputProjectHead($custom_fields)
 		$needs_list[] = outputTeamMember ( $user_info, "blue" );
 	}
 
+	$user_info = get_userdata($custom_fields['book_other'][0]); 
+	if (is_object($user_info)) {
+		$needs_list[] = outputTeamMember ( $user_info, "" );
+	}
+
+	$user_info = get_userdata($custom_fields['book_other2'][0]); 
+	if (is_object($user_info)) {
+		$needs_list[] = outputTeamMember ( $user_info, "" );
+	}
+
+	$user_info = get_userdata($custom_fields['book_other3'][0]); 
+	if (is_object($user_info)) {
+		$needs_list[] = outputTeamMember ( $user_info, "" );
+	}
+
 	//if ( count($needs_list) > 0 ) { 
 	?>
 			<div class="pcss3t pcss3t-icons-left  pcss3t-height-auto pcss3t-theme-3-all-white">			
@@ -654,6 +669,15 @@ function outputTeam($task, $task_custom, $custom_fields)
 	$roles[] = "Cover Designer";
 	$actors[] = $custom_fields['book_cover_designer'][0];
 	
+	$roles[] = "Other";
+	$actors[] = $custom_fields['book_other'][0];
+
+	$roles[] = "Other 2";
+	$actors[] = $custom_fields['book_other2'][0];
+
+	$roles[] = "Other 3";
+	$actors[] = $custom_fields['book_other3'][0];
+	
 	outputTeamMembers($roles, $actors); 
 ?>
 </ul>
@@ -803,6 +827,15 @@ function outputRevenueSplit($task, $task_custom, $custom_fields)
 
 	$roles[] = "Cover Designer";
 	$actors[] = $custom_fields['book_cover_designer'][0];
+	
+	$roles[] = "Other";
+	$actors[] = $custom_fields['book_other'][0];
+
+	$roles[] = "Other 2";
+	$actors[] = $custom_fields['book_other2'][0];
+
+	$roles[] = "Other 3";
+	$actors[] = $custom_fields['book_other3'][0];
 	
 	outputTeamList($roles, $actors); 
 ?>

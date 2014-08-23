@@ -106,7 +106,9 @@ function btfs_set_post_content($entry, $form)
 			'Project Manager' => 'book_project_manager',
 			'Cover Designer' => 'book_cover_designer',
 			'Proofreader' => 'book_proofreader',
-			'other' => 'book_other'
+			'Other' => 'book_other',
+			'Other 2' => 'book_other2',
+			'Other 3' => 'book_other3'
 		);
 		btfs_add_or_update_meta($book->ID, $member_fieldnames[$values["Team Role"]], $values["New Team Member"]);
    	break;
@@ -129,6 +131,8 @@ function btfs_set_post_content($entry, $form)
 		btfs_add_or_update_meta($book->ID, 'book_designer_pct', $values["Designer Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_proofreader_pct', $values["Proofreader Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_other_pct', $values["Revenue Percentage for Other"]);
+		btfs_add_or_update_meta($book->ID, 'book_other2_pct', $values["Other 2"]);
+		btfs_add_or_update_meta($book->ID, 'book_other3_pct', $values["Other 3"]);
 		break;
 	case "Original Manuscript":
 		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 94, $cur_pcr_name);
