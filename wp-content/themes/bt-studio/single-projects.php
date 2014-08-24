@@ -531,6 +531,17 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	
 	}
+	
+	// When to show book_marketing_release_date -- always
+	echo '<h4>Marketing Release Date</h4>';
+	if ( $custom_fields['book_marketing_release_date'][0] < 1 ) 
+	{
+		echo ' Marketing Release Date: N/A<br/>';
+	} else {
+		echo ' Marketing Release Date: ' . date('m-d-Y', strtotime($custom_fields['book_marketing_release_date'][0])) . "<br/>";
+	}
+
+	
 	// when to show Layout Sample
 	if ( in_array("Approve Layout",$pcr_name) ) 
 	{ 
@@ -619,6 +630,7 @@ function outputAssets($task, $task_custom, $custom_fields)
 		}
 	} 
 	// when to show edit complete date
+	echo '<h4>Edit Complete Date</h4>';
 	if ( array_count_values(array_intersect($pcr_name, array("Submit Edit Complete Date", "Submit Edited", "Show All"))) > 0 ) 
 	{
 		echo ' Edit Complete Date: ' . date('m-d-Y', strtotime($custom_fields['book_edit_complete_date'][0])) . "<br/>";
