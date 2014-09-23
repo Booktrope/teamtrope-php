@@ -124,6 +124,61 @@ function btfs_set_post_content($entry, $form)
 		
 		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 102, $cur_pcr_name);
 		
+		$custom_fields = get_post_custom($book->ID);
+		$author = unserialize($custom_fields['book_author'][0]);
+		$author_id = $author[0];
+		
+		$marketing_manager_id = $custom_fields['book_marketing_manager'][0];
+		$project_manager_id = $custom_fields['book_project_manager'][0];
+		$editor_id = $custom_fields['book_editor'][0];
+		$designer_id = $custom_fields['book_designer'][0];
+		$proofreader_id = $custom_fields['book_proofreader'][0];
+		$other_id = $custom_fields['book_other'][0];
+		$other2_id = $custom_fields['book_other2'][0];
+		$other3_id = $custom_fields['book_other3'][0];
+		
+		$teamAlloc = new parseObject("TeamRevenueAllocation");
+		$teamAlloc->teamtropeId = $book->ID;
+		
+		$timeZone = "America/Los_Angeles";
+		$date = new DateTime($values["Effective Date"], new DateTimeZone($timeZone));		
+		$teamAlloc->effectiveDate = array('__type' => 'Date' , 'iso' => btfs_format_parse_date(btfs_revallocation_effective_date($date)->format('Y-m-d')));
+		
+		$originalDate = new DateTime($values["Effective Date"], new DateTimeZone($timeZone));
+		$teamAlloc->submittedEffectiveDate = array('__type' => 'Date' , 'iso' => btfs_format_parse_date($originalDate->format('Y-m-d')));
+		
+		$teamAlloc->authorId = intval($author_id);
+		$teamAlloc->authorPct = intval($values["Author Percentage"]);
+		
+		$teamAlloc->managerId = intval($marketing_manager_id);
+		$teamAlloc->managerPct = intval($values["Book Manager Percentage"]);
+		
+		$teamAlloc->projectManagerId = intval($project_manager_id);
+		$teamAlloc->projectManagerPct = intval($values["Project Manager Percentage"]);
+		
+		
+		$teamAlloc->editorId = intval($editor_id);
+		$teamAlloc->editorPct = intval($values["Editor Percentage"]);
+		
+		$teamAlloc->designerId = intval($designer_id);
+		$teamAlloc->designerPct = intval($values["Designer Percentage"]);
+		
+		$teamAlloc->proofreaderId = intval($proofreader_id);
+		$teamAlloc->proofreaderPct = intval($values["Proofreader Percentage"]);	
+		
+		$teamAlloc->otherId = intval($other_id);
+		$teamAlloc->otherPct = intval($values["Revenue Percentage for Other"]);
+		
+		$teamAlloc->other2Id = intval($other2_id);
+		$teamAlloc->other2Pct = intval($values["Other 2"]);
+		
+		$teamAlloc->other3Id = intval($other3_id);
+		$teamAlloc->other3Pct = intval($values["Other 3"]);
+		
+		$teamAlloc->sentToRjMetrics = false;
+		
+		$teamAlloc->save();
+		
 		btfs_add_or_update_meta($book->ID, 'book_author_pct', $values["Author Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_manager_pct', $values["Book Manager Percentage"]);
 		btfs_add_or_update_meta($book->ID, 'book_project_manager_pct', $values["Project Manager Percentage"]);
@@ -352,6 +407,53 @@ function btfs_set_post_content($entry, $form)
 function startsWith($haystack, $needle)
 {
 	return $needle === "" || strpos($haystack, $needle) === 0;
+}
+
+
+function btfs_revallocation_effective_date($input)
+{
+	$timeZone = "America/Los_Angeles";
+	
+	$dateToday = new DateTime();
+	$dateToday->setTimezone(new DateTimeZone($timeZone));
+	$result = new DateTime();
+	
+	//error_log("today:".$dateToday->format('Y-m-d')." input:".$input->format('Y-m-d'));
+	
+	if($input->format("Y-m-d") == $dateToday->format("Y-m-d"))
+	{
+		//error_log("equal");
+		if (intval($input->format('d')) != 1)
+		{
+			date_add($dateToday, date_interval_create_from_date_string('1 month'));		
+			$result = new DateTime($dateToday->format("Y-m-01"));
+		}
+		else
+		{
+			$result = new DateTime($dateToday->format("Y-m-d"));
+		}
+	}
+	else if($input < $dateToday)
+	{
+		//error_log("less");
+		date_add($dateToday, date_interval_create_from_date_string('1 month'));		
+		$result = new DateTime($dateToday->format("Y-m-01"));
+		 
+	}
+	else
+	{
+		//error_log("greater");
+		if(intval($input->format('d')) != 1)
+		{
+			date_add($input, date_interval_create_from_date_string('1 month'));
+			$result = new DateTime($input->format("Y-m-01"));
+		}
+		else
+		{
+			$result = new DateTime($input->format("Y-m-d"));
+		}
+	}	
+	return $result;
 }
 
 //***************************** Parse.com Price Change Queue ****************************/
