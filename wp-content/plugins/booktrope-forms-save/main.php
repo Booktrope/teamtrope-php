@@ -147,6 +147,15 @@ function btfs_set_post_content($entry, $form)
 		$originalDate = new DateTime($values["Effective Date"], new DateTimeZone($timeZone));
 		$teamAlloc->submittedEffectiveDate = array('__type' => 'Date' , 'iso' => btfs_format_parse_date($originalDate->format('Y-m-d')));
 		
+		$teamAlloc->submittedBy = intval($entry["created_by"]);
+		
+		$dateFormatString = 'Y-m-d\TH:i:s.u';
+		$date_time = new DateTime($entry["date_created"]);	
+		$date = date_format($date_time, $dateFormatString);
+		$date = substr($date, 0, -3).'Z';
+		
+		$teamAlloc->submittedDate = array('__type' => 'Date', 'iso' => $date);
+		
 		$teamAlloc->authorId = intval($author_id);
 		$teamAlloc->authorPct = intval($values["Author Percentage"]);
 		
@@ -155,7 +164,6 @@ function btfs_set_post_content($entry, $form)
 		
 		$teamAlloc->projectManagerId = intval($project_manager_id);
 		$teamAlloc->projectManagerPct = intval($values["Project Manager Percentage"]);
-		
 		
 		$teamAlloc->editorId = intval($editor_id);
 		$teamAlloc->editorPct = intval($values["Editor Percentage"]);
