@@ -140,7 +140,7 @@ function btfs_set_post_content($entry, $form)
 		$teamAlloc = new parseObject("TeamRevenueAllocation");
 		$teamAlloc->teamtropeId = $book->ID;
 		
-		$timeZone = "America/Los_Angeles";
+		$timeZone = date_default_timezone_get();
 		$date = new DateTime($values["Effective Date"], new DateTimeZone($timeZone));		
 		$teamAlloc->effectiveDate = array('__type' => 'Date' , 'iso' => btfs_format_parse_date(btfs_revallocation_effective_date($date)->format('Y-m-d')));
 		
