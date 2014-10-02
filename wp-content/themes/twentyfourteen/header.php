@@ -19,6 +19,7 @@
 <html <?php language_attributes(); ?>>
 <!--<![endif]-->
 <head>
+	<script src="<?php bloginfo('stylesheet_directory');?>/_inc/sorttable.js"></script>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width">
 	<title><?php wp_title( '|', true, 'right' ); ?></title>
@@ -27,6 +28,9 @@
 	<!--[if lt IE 9]>
 	<script src="<?php echo get_template_directory_uri(); ?>/js/html5.js"></script>
 	<![endif]-->
+	<link rel="stylesheet" href="<?php bloginfo('stylesheet_directory');?>/css/demo.css">
+	<link rel="stylesheet" href="<?php bloginfo('stylesheet_directory');?>/css/pcss3t.css">
+	<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 	<?php wp_head(); ?>
 </head>
 

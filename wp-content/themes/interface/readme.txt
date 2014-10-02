@@ -61,6 +61,9 @@ https://wordpress.org/themes/simple-catch
 
 == CHANGE LOG ==
 
+= 1.2 =
+ - Previous/Next post link issue fixed in specific blog article
+
 = 1.1 =
  - bbPress compatible issue fixed
 

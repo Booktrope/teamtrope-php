@@ -935,3 +935,19 @@ if ( !function_exists( 'wdp_un_check' ) ) {
       echo '<div class="error fade"><p>' . __('Please install the latest version of <a href="http://premium.wpmudev.org/project/update-notifications/" title="Download Now &raquo;">our free Update Notifications plugin</a> which helps you stay up-to-date with the most stable, secure versions of WPMU DEV themes and plugins. <a href="http://premium.wpmudev.org/wpmu-dev/update-notifications-plugin-information/">More information &raquo;</a>', 'wpmudev') . '</a></p></div>';
   }
 }
+
+/* 	team display shortcode
+	- original use: rev allocation form
+	
+	show role, member name, email
+*/
+function bt_list_team( $post_id )
+{
+
+	$output = "Editor: Justin justin@booktrope.com<br/>Author: Jesse jesse@booktrope.com<br/>Proofreader: Kelsey kelesy@booktrope.com";
+    
+	return $output;
+}
+
+add_shortcode( 'teamroles', 'bt_list_team' );
+

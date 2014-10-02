@@ -348,8 +348,16 @@ function interface_theloop_for_single() {
     </footer>
     <!-- .entry-meta -->
     <?php  }
-						 }
+    do_action( 'interface_after_post_content' );
+						 
+             }
+
+    do_action( 'interface_before_comments_template' ); 
+
 		comments_template();
+
+    do_action ( 'interface_after_comments_template' );
+
 		?>
   </article>
 </section>

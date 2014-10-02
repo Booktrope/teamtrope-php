@@ -156,12 +156,12 @@ h2 {
 }
 
 h3 {
-	font-size: 22px;
+	font-size: 20px;
 	line-height: 1.0909090909;
 }
 
 h4 {
-	font-size: 20px;
+	font-size: 19px;
 	line-height: 1.2;
 }
 
@@ -4228,3 +4228,141 @@ a.post-thumbnail:hover {
 		line-height: 36px;
 	}
 }
+
+.pcss3t-theme-3-all-white {
+	background: #fff;	
+}
+
+div.pcss3t.pcss3t-theme-3-all-white > label {
+	color: #333;
+	vertical-align: top;
+	min-height: 60px;
+	line-height: 60px;
+}
+.pcss3t-theme-3-all-white img.avatar {
+	padding: 10px 0px;0px 0px;
+	float: left;
+}
+
+#left {
+	float:left;
+	width:50%;
+	overflow:hidden;
+}
+#right {
+	overflow:hidden;
+}
+.awesome-x {font-family: FontAwesome;color:red;font-size:24px;}
+.awesome-check {font-family: FontAwesome;color:green;font-size:24px;}
+
+table tr th{font-size:16px;padding:8px;vertical-align:bottom;text-align: center;background: #dfdfdf;}
+table tr td{padding:8px;vertical-align:middle;text-align: center;}
+table tr:nth-child(odd){background-color: #efefef;}
+table tr td.book-title{min-width: 250px;text-align: left;}
+table tr td.label{width:25%;}
+table tr td.thread-info p{margin:0;}
+table tr td.thread-info p.thread-excerpt{margin-top:3px;}
+table.notification-settings{margin-bottom:20px;}
+table.notification-settings th.icon,table.notification-settings td:first-child{display:none;}
+table.notification-settings th.title{width:80%;}
+table.notification-settings .yes,table.notification-settings .no{width:40px;}
+table.forum{margin:0px 0px 20px 0px;width:auto;}
+table.forum tr.closed td.td-title{padding-left:35px;}
+table.forum tr > td:first-child,table.forum tr > th:first-child{padding-left:15px;}
+table.forum tr > td:last-child,table.forum tr > th:last-child{padding-right:15px;}
+table.forum td img.avatar{margin-right:5px;}
+table.forum td.td-poster,table.forum td.td-group{min-width:130px;}
+table.forum th#th-title{width:40%;}
+table.forum th#th-postcount{width:1%;}
+
+.needs {
+color:#000;
+background:none;
+display:block;
+}
+.needs li {
+float:left; 
+display:block;
+padding:10px;
+margin:5px;
+}
+
+.needs li.yellow {
+	background:#F0D818;
+	text-shadow: none;
+}
+.needs li.green {
+	background:#AED991;
+	text-shadow: none;
+}
+.needs li.red {
+	background:#E6583E;
+	text-shadow: none;
+}
+.needs li.blue {
+	background:#1394BB;
+	text-shadow: none;
+}
+.needs li.brown {
+	background:#8B7A6A;
+	text-shadow: none;
+}
+
+.pcss3t label.yellow {
+	background:#F0D818;
+	text-shadow: none;
+}
+.pcss3t label.green {
+	background:#AED991;
+	text-shadow: none;
+}
+.pcss3t label.red {
+	background:#E6583E;
+	text-shadow: none;
+}
+.pcss3t label.blue {
+	background:#1394BB;
+	text-shadow: none;
+}
+.pcss3t label.brown {
+	background:#8B7A6A;
+	text-shadow: none;
+}
+
+/* add popup tool tip for grid status updates, etc. */
+.tooltip {
+	border-bottom: 1px dotted #000000; color: #000000; outline: none;
+	cursor: help; text-decoration: none;
+	position: relative;
+}
+.tooltip span {
+	margin-left: -999em;
+	position: absolute;
+}
+.tooltip:hover span {
+	border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; 
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	font-family: Calibri, Tahoma, Geneva, sans-serif;
+	position: absolute; left: 1em; top: 2em; z-index: 99;
+	margin-left: 0; width: 250px;
+}
+.tooltip:hover img {
+	border: 0; margin: -10px 0 0 -55px;
+	float: left; position: absolute;
+}
+.tooltip:hover em {
+	font-family: Candara, Tahoma, Geneva, sans-serif; font-size: 1.2em; font-weight: bold;
+	display: block; padding: 0.2em 0 0.6em 0;
+}
+
+.thumbalignright{
+	float:right;margin-top:10px;margin-left:15px;width: 70px;
+}
+
+.gform_wrapper .gf_progressbar  {
+	background-image: none !important;
+}
+.gform_wrapper .percentbar_blue {
+	background-image: none !important;
+}
+
