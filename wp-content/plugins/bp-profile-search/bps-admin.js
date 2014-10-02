@@ -1,4 +1,3 @@
-
 function add_field(forWhat) {
 	var holder = document.getElementById( 'field_box' );
 	var theId = document.getElementById( 'field_next' ).value;
