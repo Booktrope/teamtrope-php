@@ -4383,6 +4383,12 @@ body.activity-permalink #buddypress .activity-list li .activity-content {
 	margin-left: 7px;
 }
 
+#buddypress div.dir-search {
+	float: left;
+	margin: 0 0 20px 0;
+	display: inline-block;
+}
+
 body.activity-permalink #buddypress div.activity-comments {
 	margin-left: 7px;
 }
