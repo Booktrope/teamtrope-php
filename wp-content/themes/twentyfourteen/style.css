@@ -4366,3 +4366,11 @@ margin:5px;
 	background-image: none !important;
 }
 
+#buddypress div.activity-comments {
+	margin: 0 0 0 7px;
+}
+
+#buddypress div.activity-comments ul li > ul {
+	margin-left: 3px;
+	padding-left: 1px;
+}
