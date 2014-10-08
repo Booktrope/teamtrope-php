@@ -4374,3 +4374,15 @@ margin:5px;
 	margin-left: 3px;
 	padding-left: 1px;
 }
+
+div.activity-avatar {
+	display: none;
+}
+
+body.activity-permalink #buddypress .activity-list li .activity-content {
+	margin-left: 7px;
+}
+
+body.activity-permalink #buddypress div.activity-comments {
+	margin-left: 7px;
+}
