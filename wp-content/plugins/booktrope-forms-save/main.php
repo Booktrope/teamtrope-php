@@ -54,6 +54,33 @@ function btfs_set_post_content($entry, $form)
 	
 	$book = get_post($values["Project ID"]);
 	
+	$custom_fields = get_post_custom($book->ID);
+	
+	if (isset($custom_fields["book_teamroom_link"]) && isset($custom_fields["book_teamroom_link"][0]))
+	{
+		$teamroom_link = $custom_fields["book_teamroom_link"][0];
+		
+		$pattern = '/\/([a-zA-Z-_])*\/$/';
+		$matches = array();
+		preg_match($pattern, $teamroom_link, $matches);
+		$group_stub = str_replace("/", "", $matches[0]);
+		$group_id = BP_Groups_Group::group_exists($group_stub);
+		
+		$book_title = "";
+		if(isset($values["Book Project (Working Title)"]))
+		{
+			$book_title = $values["Book Project (Working Title)"];
+		}
+		else
+		{
+			$book_title = $values["Book"];
+		}
+		
+		$content = '<a href="'.$values["Go to Project"].'">'.$book_title.'</a>';
+		groups_record_activity(array("action" => $values['Submitted by']." submitted ".$formName, "content" => $content, "type" => "new_forum_post","item_id" => $group_id));
+	}
+	
+	
 	//getting the data from the process control record
 	// get the next step info from the PCR, not the form
 	
