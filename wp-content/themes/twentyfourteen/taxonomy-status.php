@@ -25,8 +25,10 @@
 <?php 
 $total_projects = $total_projects + intval(count($posts));
 
-$headers = array("Title", "Days in Step", "Author","Genre","Original Manuscript","Teamroom Link","Workflow Step","Project Manager","Editor","Proofreader",
-                 "Marketing Manager","Cover Designer","Edit Complete Date",
+$headers = array("Title", "Days in Step", "Author","Genre","Teamroom Link",
+				 "Prod Workflow Step","Design Step","Marketing Step",
+			 	 "Project Manager","Editor","Proofreader",
+                 "Marketing Manager","Cover Designer","Edit Complete Date","Original Manuscript",
                  "Edited Manuscript","Children's Book?",
                  "Color Interior?","Has Index?","Has Internal Illustrations?",
                  "Non-Standard Size?","Final Manuscript","Has Sub-Chapters?",
@@ -62,15 +64,17 @@ function toggleTable<?php echo $i; ?>() {
 <?php 
 
 	$arrayFields = array(
-						"book_manuscript_original" => array("single", "-", "", true),
 						"book_teamroom_link"       => array("link", "<span class='awesome-x'>&#xf00d;</span>", "Team Room", false),
 						"book_pcr_step"							=> array("single", "-", "", false),
+						"book_pcr_step_cover_design"							=> array("single", "-", "", false),
+						"book_pcr_step_mkt_info"							=> array("single", "-", "", false),
    						"book_project_manager"		=> array("user", "-", "", false),
    						"book_editor"					=> array("user", "-", "", false),
    						"book_proofreader"			=> array("user", "-", "", false),
    						"book_marketing_manager"	=> array("user", "-", "", false),
    						"book_cover_designer"		=> array("user", "-", "", false),   	
    						"book_edit_complete_date"	=> array("single", "-", "", false),
+						"book_manuscript_original" => array("single", "-", "", true),
 						"book_manuscript_edited"	=> array("single", "-", "", true),
 						"book_childrens_book"		=> array("checkbox", "-", "", false),
 						"book_color_interior"		=> array("checkbox", "-", "", false),
