@@ -65,6 +65,7 @@ function btfs_set_post_content($entry, $form)
 		preg_match($pattern, $teamroom_link, $matches);
 		$group_stub = str_replace("/", "", $matches[0]);
 		$group_id = BP_Groups_Group::group_exists($group_stub);
+		$group = new BP_Groups_Group( $group_id, true );
 		
 		$book_title = "";
 		if(isset($values["Book Project (Working Title)"]))
@@ -76,8 +77,12 @@ function btfs_set_post_content($entry, $form)
 			$book_title = $values["Book"];
 		}
 		
-		$content = '<a href="'.$values["Go to Project"].'">'.$book_title.'</a>';
-		groups_record_activity(array("action" => $values['Submitted by']." submitted ".$formName, "content" => $content, "type" => "new_forum_post","item_id" => $group_id));
+		$action = sprintf( __( '%s submitted form %s for %s:', 'groupblog'), bp_core_get_userlink($entry['created_by']), '<a href="' . get_permalink( $book->ID ) .'">' . attribute_escape( $formName ) . '</a>', '<a href="' . $values["Go to Project"] . '">' . attribute_escape( $book_title ) . '</a>' );
+		
+		groups_record_activity(array("action" => $action,
+									"type" => "new_forum_post",
+									"component" => "groups",
+									"item_id" => $group_id));
 	}
 	
 	
