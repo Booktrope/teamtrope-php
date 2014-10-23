@@ -67,15 +67,8 @@ function btfs_set_post_content($entry, $form)
 		$group_id = BP_Groups_Group::group_exists($group_stub);
 		$group = new BP_Groups_Group( $group_id, true );
 		
-		$book_title = "";
-		if(isset($values["Book Project (Working Title)"]))
-		{
-			$book_title = $values["Book Project (Working Title)"];
-		}
-		else
-		{
-			$book_title = $values["Book"];
-		}
+		$book_title = $book->post_title;
+
 		
 		$action = sprintf( __( '%s submitted form %s for %s:', 'groupblog'), bp_core_get_userlink($entry['created_by']), '<a href="' . get_permalink( $book->ID ) .'">' . attribute_escape( $formName ) . '</a>', '<a href="' . $values["Go to Project"] . '">' . attribute_escape( $book_title ) . '</a>' );
 		
