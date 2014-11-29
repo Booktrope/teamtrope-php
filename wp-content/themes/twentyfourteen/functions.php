@@ -646,7 +646,6 @@ function bt_gform_edit_date_filter($form){
     return $form;
 }
 
-
 if ( ! function_exists( 'bt_func_get_amazon_json_for_asin' ) ) :
 function bt_func_get_amazon_json_for_asin($asin)
 {
@@ -681,6 +680,40 @@ function bt_func_get_amazon_sales_for_asin($asin)
 }
 endif;
 
+if ( ! function_exists( 'bt_func_get_apple_sales_for_book' ) ) :
+function bt_func_get_apple_sales_for_book($book_parse_id)
+{
+	//look up in cache
+	//cache hit ?  return : call parse, wrap results, save in cache, return result
+	$json_sresult = get_transient( $book_parse_id."_apple_sales");
+	if(empty($json_result)) 
+	{
+		$parse_data = bt_func_load_apple_sales_stats_from_parse($book_parse_id);
+		$json_result = bt_func_wrap_parse_apple_sales_results($parse_data);
+
+		set_transient($book_parse_id."_apple_sales", $json_result, 8 * HOUR_IN_SECONDS);
+	}
+	return $json_result;
+}
+endif;
+
+if ( ! function_exists( 'bt_func_get_nook_sales_for_book' ) ) :
+function bt_func_get_nook_sales_for_book($book_parse_id)
+{
+	//look up in cache
+	//cache hit ?  return : call parse, wrap results, save in cache, return result
+//	$json_sresult = get_transient( $book_parse_id."_nook_sales");
+	if(empty($json_result)) 
+	{
+		$parse_data = bt_func_load_nook_sales_stats_from_parse($book_parse_id);
+		$json_result = bt_func_wrap_parse_nook_sales_results($parse_data);
+
+		set_transient($book_parse_id."_nook_sales", $json_result, 8 * HOUR_IN_SECONDS);
+	}
+	return $json_result;
+}
+endif;
+
 if ( ! function_exists( 'bt_func_wrap_parse_results' ) ) :
 function bt_func_wrap_parse_results($parse_data)
 {
@@ -699,9 +732,9 @@ function bt_func_wrap_parse_results($parse_data)
    $json_result .= "             text: '".preg_replace('/\'/', '\\\'',$parse_data["title"])."'";
    $json_result .= "            },";
    $json_result .= "            subtitle: {";
-   $json_result .= "                text: 'Amazon Price and Ranking Numbers'";
+   $json_result .= "                text: 'Previous 4 days Amazon Price and Rankings'";
 
-  $json_result .= "            },";
+   $json_result .= "            },";
    $json_result .= "            xAxis: [{";
    $json_result .= "                 type: 'datetime',";
    $json_result .= "                 dateTimeLabelFormats: {";
@@ -823,6 +856,99 @@ function bt_func_wrap_parse_sales_results($parse_data)
 }
 endif;
 
+if ( ! function_exists( 'bt_func_wrap_parse_apple_sales_results' ) ) :
+function bt_func_wrap_parse_apple_sales_results($parse_data)
+{
+	if($parse_data["title"] === "" && (isset($parse_data["price"]) && $parse_data["price"] === "") && $parse_data["sales_rank"] === "")
+	{
+		return "";
+	}
+	$json_result = '';
+	$json_result .= "     {";
+	$json_result .= "           chart: {";
+	$json_result .= "                zoomType: 'xy'";
+	$json_result .= "            },";
+	$json_result .= "            title: {";
+	$json_result .= "            	 text: '".preg_replace('/\'/', '\\\'',$parse_data["title"])." Apple Sales'";
+	$json_result .= "            },";
+	$json_result .= "            subtitle: {";
+	$json_result .= "                text: 'Daily Apple Sales'";
+	$json_result .= "            },";
+
+	$json_result .= "       xAxis: [{";
+	$json_result .= "            type: 'datetime',";
+	$json_result .= "            dateTimeLabelFormats: {";
+	$json_result .= "                month: '%e. %b',";
+	$json_result .= "                year: '%b'";
+	$json_result .= "            }";
+	$json_result .= "        }],";
+	$json_result .= "        yAxis: {";
+	$json_result .= "                title: {";
+	$json_result .= "                    text: 'Sales Estimate'";
+	$json_result .= "                },";
+	$json_result .= "                min: 0";
+	$json_result .= "            },";
+	$json_result .= "        tooltip: {";
+	$json_result .= "            shared: true";
+	$json_result .= "        },";
+	$json_result .= "        series: [{";
+	$json_result .= "            name: 'Sales',";
+	$json_result .= "            color: '#E6583E',";
+	$json_result .= "            type: 'column',";
+	$json_result .= "            data: [".$parse_data["sales"]."]";
+	$json_result .= "      	 }]";
+	$json_result .= "      }";
+	return $json_result;
+}
+endif;
+
+if ( ! function_exists( 'bt_func_wrap_parse_nook_sales_results' ) ) :
+function bt_func_wrap_parse_nook_sales_results($parse_data)
+{
+	if($parse_data["title"] === "" && (isset($parse_data["price"]) && $parse_data["price"] === "") && $parse_data["sales_rank"] === "")
+	{
+		return "";
+	}
+	$json_result = '';
+	$json_result .= "     {";
+	$json_result .= "           chart: {";
+	$json_result .= "                zoomType: 'xy'";
+	$json_result .= "            },";
+	$json_result .= "            title: {";
+	$json_result .= "            	 text: '".preg_replace('/\'/', '\\\'',$parse_data["title"])." Nook Sales'";
+	$json_result .= "            },";
+	$json_result .= "            subtitle: {";
+	$json_result .= "                text: 'Daily Nook Sales'";
+	$json_result .= "            },";
+
+	$json_result .= "       xAxis: [{";
+	$json_result .= "            type: 'datetime',";
+	$json_result .= "            dateTimeLabelFormats: {";
+	$json_result .= "                month: '%e. %b',";
+	$json_result .= "                year: '%b'";
+	$json_result .= "            }";
+	$json_result .= "        }],";
+	$json_result .= "        yAxis: {";
+	$json_result .= "                title: {";
+	$json_result .= "                    text: 'Sales Estimate'";
+	$json_result .= "                },";
+	$json_result .= "                min: 0";
+	$json_result .= "            },";
+	$json_result .= "        tooltip: {";
+	$json_result .= "            shared: true";
+	$json_result .= "        },";
+	$json_result .= "        series: [{";
+	$json_result .= "            name: 'Sales',";
+	$json_result .= "            color: '#F0D818',";
+	$json_result .= "            type: 'column',";
+	$json_result .= "            data: [".$parse_data["sales"]."]";
+	$json_result .= "      	 }]";
+	$json_result .= "      }";
+	return $json_result;
+}
+endif;
+
+
 if ( ! function_exists( 'bt_func_load_amazon_stats_from_parse' ) ) :
 function bt_func_load_amazon_stats_from_parse($asin)
 {
@@ -838,7 +964,6 @@ function bt_func_load_amazon_stats_from_parse($asin)
 
 
 	$cloud->__set("asin",$asin);
-print_r($cloud, true);
 	
 	//TODO: add support for these paraameters
 	//$cloud->__set("skip", 150);
@@ -853,7 +978,7 @@ print_r($cloud, true);
    $price_str = "";
    $sales_rank_str = "";
 
-	$cutOffDate = date(strtotime("2014-02-07 20:00:00"));
+   $cutOffDate = date(strtotime("2014-02-07 20:00:00"));
 
    $payload['title'] = $results->result->title;
 	foreach($results->result->crawl as $result)
@@ -942,6 +1067,120 @@ function bt_func_load_amazon_sales_stats_from_parse($asin)
 		$second = $crawl_time[2];
 		
 		$sales = $result->dailySales;
+		
+        $dailySales_str.= sprintf("[Date.UTC(%d,%d,%d,%d,%d,%d), %s]", $year, $month, $day,
+      	0, 0, 0, $sales);
+		
+		$first = false;
+	}
+	$payload['sales'] = $dailySales_str;
+	
+	return $payload;
+
+}
+endif;
+
+//bt_func_load_apple_sales_stats_from_parse
+if ( ! function_exists( 'bt_func_load_apple_sales_stats_from_parse' ) ) :
+function bt_func_load_apple_sales_stats_from_parse($book_parse_id)
+{
+	$payload = array(
+		'sales'			=> '',
+		'title'			=> '',
+	);
+
+	$cloud = new parseCloud("getSalesDataForApple");
+
+	$cloud->__set("book",$book_parse_id);
+	
+	//TODO: add support for these paraameters
+	//$cloud->__set("skip", 150);
+	//$cloud->__set("limit",1000);
+	// Running the cloud function
+	$results = $cloud->run();
+	
+	$json_result = json_encode($results);
+
+   $first = true;
+   $dailySales_str = "";
+   $sales_rank_str = "";
+
+   $payload['title'] = $results->result->title;
+	foreach($results->result->crawl as $result)
+	{
+		if(!$first) { $dailySales_str.= ","; }
+		
+		$date_parts = explode('T', substr($result->crawlDate->iso, 0, strlen($result->crawlDate->iso)-5));
+		
+		$crawl_date = explode('-', $date_parts[0]);
+		$crawl_time = explode(':', $date_parts[1]);
+		
+		$year = $crawl_date[0];
+		$month = $crawl_date[1]-1;
+		$day = $crawl_date[2];
+		
+		$hour = $crawl_time[0];
+		$minute = $crawl_time[1];
+		$second = $crawl_time[2];
+		
+		$sales = $result->appleSales;
+		
+        $dailySales_str.= sprintf("[Date.UTC(%d,%d,%d,%d,%d,%d), %s]", $year, $month, $day,
+      	0, 0, 0, $sales);
+		
+		$first = false;
+	}
+	$payload['sales'] = $dailySales_str;
+	
+	return $payload;
+
+}
+endif;
+
+//bt_func_load_nook_sales_stats_from_parse
+if ( ! function_exists( 'bt_func_load_nook_sales_stats_from_parse' ) ) :
+function bt_func_load_nook_sales_stats_from_parse($book_parse_id)
+{
+	$payload = array(
+		'sales'			=> '',
+		'title'			=> '',
+	);
+
+	$cloud = new parseCloud("getSalesDataForNook");
+
+	$cloud->__set("book",$book_parse_id);
+	
+	//TODO: add support for these paraameters
+	//$cloud->__set("skip", 150);
+	//$cloud->__set("limit",1000);
+	// Running the cloud function
+	$results = $cloud->run();
+	
+	$json_result = json_encode($results);
+
+   $first = true;
+   $dailySales_str = "";
+   $sales_rank_str = "";
+
+   $payload['title'] = $results->result->title;
+	foreach($results->result->crawl as $result)
+	{
+		if(!$first) { $dailySales_str.= ","; }
+		
+		$date_parts = explode('T', substr($result->crawlDate->iso, 0, strlen($result->crawlDate->iso)-5));
+		
+		$crawl_date = explode('-', $date_parts[0]);
+		$crawl_time = explode(':', $date_parts[1]);
+		
+		$year = $crawl_date[0];
+		$month = $crawl_date[1]-1;
+		$day = $crawl_date[2];
+		
+		$hour = $crawl_time[0];
+		$minute = $crawl_time[1];
+		$second = $crawl_time[2];
+		
+		$sales = $result->nookSales;
 		
         $dailySales_str.= sprintf("[Date.UTC(%d,%d,%d,%d,%d,%d), %s]", $year, $month, $day,
       	0, 0, 0, $sales);

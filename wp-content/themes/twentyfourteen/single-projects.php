@@ -778,24 +778,49 @@ function outputAnalytics($task, $task_custom, $custom_fields)
 	{ ?>
 		<h1>Rankings and Analytics</h1>
 		<?php
+
 		$asin = $custom_fields['book_asin'][0];
+		$book_parse_id = $custom_fields['book_parse_id'][0];
 		$json_result = bt_func_get_amazon_json_for_asin($asin);
 		$json_sales_result = bt_func_get_amazon_sales_for_asin($asin);	
-	//	echo "***" . $json_sales_result . "***";
+		$json_apple_sales_result = bt_func_get_apple_sales_for_book($book_parse_id);	
+		$json_nook_sales_result = bt_func_get_nook_sales_for_book($book_parse_id);	
+	//	echo "***" . $json_apple_sales_result . "***";
 		if($json_result || $json_sales_result)
 		{ ?>
 			<script src="//code.highcharts.com/highcharts.js"></script>
 			<script src="//code.highcharts.com/modules/exporting.js"></script>
 		<?php
-		if($json_sales_result) {
+		if($json_sales_result) { // amazon sales
+			?>
+			<script type='text/javascript'>//<![CDATA[ 
+			jQuery(document).ready(function ($) {
+					$('#daily-sales-container').highcharts(<?php echo $json_sales_result; ?>);
+				});
+			//]]>  
+			</script>
+					<div id="daily-sales-container" style="min-width: 910px; height: 400px; margin: 0 auto"></div>
+				<?php
+		}
+		if($json_apple_sales_result <> "") { // apple sales
 	?>
 	<script type='text/javascript'>//<![CDATA[ 
 	jQuery(document).ready(function ($) {
-			$('#daily-sales-container').highcharts(<?php echo $json_sales_result; ?>);
+			$('#daily-apple-sales-container').highcharts(<?php echo $json_apple_sales_result; ?>);
 		});
 	//]]>  
 	</script>
-			<div id="daily-sales-container" style="min-width: 910px; height: 400px; margin: 0 auto"></div>
+			<div id="daily-apple-sales-container" style="min-width: 910px; height: 400px; margin: 0 auto"></div>
+	<?php }
+		if($json_nook_sales_result <> "") { // nook sales
+	?>
+	<script type='text/javascript'>//<![CDATA[ 
+	jQuery(document).ready(function ($) {
+			$('#daily-nook-sales-container').highcharts(<?php echo $json_nook_sales_result; ?>);
+		});
+	//]]>  
+	</script>
+			<div id="daily-nook-sales-container" style="min-width: 910px; height: 400px; margin: 0 auto"></div>
 	<?php }
 		if($json_result) {
 	?>
