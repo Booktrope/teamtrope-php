@@ -67,11 +67,12 @@
 			</div>
 
 			<div class="item">
+			<span class="update"> <?php echo $avail_indicator; ?></span>
 				<div class="item-title">
 					<a href="<?php bp_member_permalink(); ?>"><?php bp_member_name(); ?></a>
 
-					<span class="update"> <?php echo $mbr_roles . $avail_indicator; ?></span>
-<div class="item-meta"><span class="activity"><?php bp_member_last_active(); ?></span></div>
+					<span class="update"> <?php echo $mbr_roles ?></span>
+					<div class="item-meta"><span class="activity"><?php bp_member_last_active(); ?></span></div>
 				</div>
 
 				<?php do_action( 'bp_directory_members_item' ); ?>
