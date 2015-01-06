@@ -69,14 +69,17 @@ function bp_fp_launch()
 	{
 		$user_id 	= wp_get_current_user()->ID;
 		$current_url  = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+//echo $current_url;echo "<br/>";
 		$redirect_url = bp_fp_get_redirect_url($user_id);
-
+//echo $redirect_url;echo "<br/>";
 		if (strpos($current_url, $redirect_url) === false)
 		{
 			global $wpdb;
 
 			$bp_prefix  	 = bp_core_get_table_prefix();
-			$xprofile_fields = $wpdb->get_results("SELECT count(*) AS empty_fields_count FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')");
+			$sql_stmt = "SELECT count(*) AS empty_fields_count FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')";
+			
+			$xprofile_fields = $wpdb->get_results($sql_stmt);
 
 			foreach ($xprofile_fields as $field) 
 			{
@@ -103,6 +106,7 @@ function bp_fp_styles()
  */
 function bp_fp_notice() 
 {
+echo "at notice";	
 	if (is_user_logged_in()) 
 	{
 		$user_id 	= wp_get_current_user()->ID;
@@ -114,9 +118,15 @@ function bp_fp_notice()
 			global $wpdb;
 
 			$bp_prefix  	 = bp_core_get_table_prefix();
-			$xprofile_fields = $wpdb->get_results("SELECT `name` FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')");
+			$sql_stmt = "SELECT count(*) AS empty_fields_count FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')";
+			$sql_stmt = "SELECT `name` FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')";
+			$xprofile_fields = $wpdb->get_results($sql_stmt);
+
+	//		$xprofile_fields = $wpdb->get_results("SELECT `name` FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')");
 	
 			$xprofile_fields_count = count($xprofile_fields);
+			
+echo $xprofile_fields_count;
 			if ($xprofile_fields_count > 0)
 			{
 				$message = '<div id="bp_fp_message">' . __('Please complete your profile to continue', 'bp-force-profile') . ' (' . $xprofile_fields_count . __(' fields are missing', 'bp-force-profile') . ')</div>';
@@ -147,4 +157,3 @@ add_action('admin_menu'			, 'bp_fp_admin_menu');
 add_action('template_redirect'		, 'bp_fp_launch');
 add_action('wp_head'			, 'bp_fp_styles');
 add_action('wp_footer'			,'bp_fp_notice');
-?>
