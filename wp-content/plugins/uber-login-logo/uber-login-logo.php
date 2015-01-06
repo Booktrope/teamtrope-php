@@ -6,7 +6,7 @@
  * @link http://www.uberweb.com.au/uber-login-logo-wordpress-plugin/
  *
  * @author Alex Rogers
- * @version 1.5.0
+ * @version 1.5.1
  * @package Uber_Login_Logo
  */
 
@@ -14,7 +14,7 @@
 Plugin Name: Uber Login Logo
 Plugin URI: http://www.uberweb.com.au/uber-login-logo-wordpress-plugin/
 Description: Change your login logo.
-Version: 1.5.0
+Version: 1.5.1
 Author: UberWeb
 Author URI: http://www.uberweb.com.au/
 Text Domain: uber-login-logo
@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 //Enable the plugin for the init hook, but only if WP is loaded. Calling this php file directly will do nothing.
 if(defined('ABSPATH') && defined('WPINC')) {
-    add_action("init",array("UberLoginLogo","init"),9);
+    add_action("wp_loaded",array("UberLoginLogo","init"));
 }
 
 /**
@@ -56,7 +56,7 @@ class UberLoginLogo
     /**
      * @const VERSION The current plugin version
      */
-    const VERSION = '1.5.0';
+    const VERSION = '1.5.1';
 
     /**
      * @const UBERURL Link to uberweb site

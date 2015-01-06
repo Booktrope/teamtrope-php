@@ -1,10 +1,9 @@
 === jQuery UI Widgets ===
 Contributors: dgwyer
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MTVAN3NBV3HCA
 Tags: jquery, tabs, accordion, dialog, ui, admin, enqueue, themeroller, styles, themes
 Requires at least: 3.5
-Tested up to: 3.9
-Stable tag: 0.33
+Tested up to: 4.0
+Stable tag: 0.34
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +28,7 @@ No need to mess about with cryptic shortcodes! Just enter clean, valid, HTML mar
 
 Note: This Plugin uses the Google CDN to load the CSS for the official jQuery UI themes.
 
-Please rate/review this Plugin if you find it useful. And see our <a href="http://www.presscoders.com" target="_blank">WordPress development site</a> for more Plugins and themes.
+Please rate/review this Plugin if you find it useful. And see our <a href="http://www.wpgothemes.com" target="_blank">WordPress development site</a> for more Plugins and themes.
 
 == Frequently Asked Questions ==
 
@@ -92,6 +91,10 @@ Usage:
 5. jQuery UI theme example.
 
 == Changelog ==
+
+*0.34*
+
+* Settings page updated.
 
 *0.33*
 

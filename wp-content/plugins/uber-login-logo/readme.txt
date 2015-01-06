@@ -2,8 +2,8 @@
 Contributors: uberweb
 Tags: login, logo, login logo, admin, customisation, customization, branding, custom login, media uploader, AJAX, wp-login
 Requires at least: 3.5
-Tested up to: 3.9
-Stable tag: 1.5.0
+Tested up to: 4.0
+Stable tag: 1.5.1
 
 A simple, lightweight WordPress plugin to change your login logo.
 
@@ -36,6 +36,9 @@ As of 0.5 This plugin makes use of the new media editor introduced in WordPress 
 2. The oh so simple settings page.
 
 == Changelog ==
+
+= version 1.5.1 =
+* compatible with WP 4.0
 
 = version 1.5.0 =
 
