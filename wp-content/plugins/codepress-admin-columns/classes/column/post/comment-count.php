@@ -1,6 +1,7 @@
 <?php
 /**
- * CPAC_Column_Post_Modified
+ * Column displaying the number of comments for an item, displaying either the total
+ * amount of comments, or the amount per status (e.g. "Approved", "Pending").
  *
  * @since 2.0
  */
@@ -8,7 +9,7 @@ class CPAC_Column_Post_Comment_Count extends CPAC_Column {
 
 	/**
 	 * @see CPAC_Column::init()
-	 * @since 2.3
+	 * @since 2.2.1
 	 */
 	public function init() {
 

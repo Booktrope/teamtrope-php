@@ -1,7 +1,10 @@
 <?php
-
 /**
- * CPAC_Column_Custom_Field
+ * Custom field column, displaying the contents of meta fields.
+ * Suited for all storage models supporting WordPress' default way of handling meta data.
+ *
+ * Supports different types of meta fields, including dates, serialized data, linked content,
+ * and boolean values.
  *
  * @since 1.0
  */
@@ -9,9 +12,9 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 
 	/**
 	 * @see CPAC_Column::init()
-	 * @since 2.3
+	 * @since 2.2.1
 	 */
-	function init() {
+	public function init() {
 
 		parent::init();
 
@@ -38,10 +41,38 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 	}
 
 	/**
+	 * @since 3.2.1
+	 */
+	public function is_field_type( $type ) {
+		return $type === $this->get_field_type();
+	}
+
+	/**
+	 * @since 3.2.1
+	 */
+	public function is_field( $field ) {
+		return $type === $this->get_field();
+	}
+
+	/**
+	 * @since 3.2.1
+	 */
+	public function get_field_type() {
+		return $this->options->field_type;
+	}
+
+	/**
+	 * @since 3.2.1
+	 */
+	public function get_field() {
+		return $this->options->field;
+	}
+
+	/**
 	 * @see CPAC_Column::sanitize_options()
 	 * @since 1.0
 	 */
-	function sanitize_options( $options ) {
+	public function sanitize_options( $options ) {
 
 		if ( empty( $options['date_format'] ) ) {
 			$options['date_format'] = get_option( 'date_format' );
@@ -72,6 +103,7 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 			'numeric'		=> __( 'Numeric', 'cpac' ),
 			'title_by_id'	=> __( 'Post Title (Post ID\'s)', 'cpac' ),
 			'user_by_id'	=> __( 'Username (User ID\'s)', 'cpac' ),
+			'term_by_id'	=> __( 'Term Name (Term ID\'s)', 'cpac' ),
 		);
 
 		// deprecated. do not use, will be removed.
@@ -173,6 +205,21 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 	}
 
 	/**
+	 * Get Terms by ID - Value method
+	 *
+	 * @since 2.3.2
+	 *
+	 * @param array $meta_value Term ID's
+	 * @return string Terms
+	 */
+	public function get_terms_by_id( $meta_value )	{
+		if ( ! is_array( $meta_value) || ! isset( $meta_value['term_id'] ) || ! isset( $meta_value['taxonomy'] ) ) {
+			return false;
+		}
+		return $this->get_terms_for_display( $meta_value['term_id'], $meta_value['taxonomy'] );
+	}
+
+	/**
 	 * Get meta value
 	 *
 	 * @since 2.0
@@ -181,7 +228,7 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 	 * @param int $id Optional Object ID
 	 * @return string Users
 	 */
-	function get_value_by_meta( $meta, $id = null ) {
+	public function get_value_by_meta( $meta, $id = null ) {
 
 		switch ( $this->options->field_type ) :
 
@@ -210,6 +257,10 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 				$meta = $this->get_users_by_id( $meta );
 				break;
 
+			case "term_by_id" :
+				$meta = $this->get_terms_by_id( $this->get_raw_value( $id ) );
+				break;
+
 			case "checkmark" :
 				$checkmark = $this->get_asset_image( 'checkmark.png' );
 
@@ -222,53 +273,19 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 
 			case "color" :
 				if ( ! empty( $meta ) ) {
-					$text_color = $this->get_text_color( $meta );
-					$meta = "<div class='cpac-color'><span style='background-color:{$meta};color:{$text_color}'>{$meta}</span></div>";
+					$meta = $this->get_color_for_display( $meta );
 				}
 				break;
 
 			case "count" :
-				if ( $count = $this->get_raw_value( $id, false ) )
+				if ( $count = $this->get_raw_value( $id, false ) ) {
 					$meta = count( $count );
+				}
 				break;
 
 		endswitch;
 
 		return $meta;
-	}
-
-	/**
-	 * Determines text color absed on bakground coloring.
-	 *
-	 * @since 1.0
-	 */
-	function get_text_color( $bg_color ) {
-
-		$rgb = $this->hex2rgb( $bg_color );
-
-		return $rgb && ( ( $rgb[0]*0.299 + $rgb[1]*0.587 + $rgb[2]*0.114 ) < 186 ) ? '#ffffff' : '#333333';
-	}
-
-	/**
-	 * Convert hex to rgb
-	 *
-	 * @since 1.0
-	 */
-	function hex2rgb( $hex ) {
-		$hex = str_replace( "#", "", $hex );
-
-		if(strlen($hex) == 3) {
-			$r = hexdec(substr($hex,0,1).substr($hex,0,1));
-			$g = hexdec(substr($hex,1,1).substr($hex,1,1));
-			$b = hexdec(substr($hex,2,1).substr($hex,2,1));
-		} else {
-			$r = hexdec(substr($hex,0,2));
-			$g = hexdec(substr($hex,2,2));
-			$b = hexdec(substr($hex,4,2));
-		}
-		$rgb = array($r, $g, $b);
-
-		return $rgb;
 	}
 
 	/**
@@ -278,7 +295,7 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 	 *
 	 * @param string Custom Field Key
 	 */
-	function get_field_key() {
+	public function get_field_key() {
 
 		return substr( $this->options->field, 0, 10 ) == "cpachidden" ? str_replace( 'cpachidden', '', $this->options->field ) : $this->options->field;
 	}
@@ -301,37 +318,18 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 			$meta = $this->recursive_implode( ', ', $meta );
 		}
 
-		if ( ! is_string( $meta ) )
+		if ( ! is_string( $meta ) ) {
 			return false;
+		}
 
 		return $meta;
-	}
-
-	/**
-	 * Get before value
-	 *
-	 * @since 1.0
-	 */
-	function get_before() {
-
-		return stripslashes( $this->options->before );
-	}
-
-	/**
-	 * Get after value
-	 *
-	 * @since 1.0
-	 */
-	function get_after() {
-
-		return stripslashes( $this->options->after );
 	}
 
 	/**
 	 * @see CPAC_Column::get_raw_value()
 	 * @since 2.0.3
 	 */
-	function get_raw_value( $id, $single = true ) {
+	public function get_raw_value( $id, $single = true ) {
 
 		$field_key = $this->get_field_key();
 
@@ -344,7 +342,7 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 	 * @see CPAC_Column::get_value()
 	 * @since 1.0
 	 */
-	function get_value( $id ) {
+	public function get_value( $id ) {
 
 		$value = '';
 
@@ -371,7 +369,7 @@ class CPAC_Column_Custom_Field extends CPAC_Column {
 	 * @see CPAC_Column::display_settings()
 	 * @since 1.0
 	 */
-	function display_settings() {
+	public function display_settings() {
 
 		$show_hidden_meta = true;
 		?>

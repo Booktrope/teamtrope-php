@@ -1,6 +1,6 @@
 <?php
 /**
- * CPAC_Column_Post_ID
+ * Columng displaying full item permalink (including URL).
  *
  * @since 2.0
  */
@@ -8,7 +8,7 @@ class CPAC_Column_Post_Permalink extends CPAC_Column {
 
 	/**
 	 * @see CPAC_Column::init()
-	 * @since 2.3
+	 * @since 2.2.1
 	 */
 	public function init() {
 
@@ -79,5 +79,4 @@ class CPAC_Column_Post_Permalink extends CPAC_Column {
 		</tr>
 		<?php
 	}
-
 }

@@ -1,6 +1,7 @@
 <?php
 /**
- * CPAC_Column_Post_Comment_Status
+ * Column displaying whether an item is open for comments, i.e. whether users can
+ * comment on this item.
  *
  * @since 2.0
  */
@@ -8,7 +9,7 @@ class CPAC_Column_Post_Comment_Status extends CPAC_Column {
 
 	/**
 	 * @see CPAC_Column::init()
-	 * @since 2.3
+	 * @since 2.2.1
 	 */
 	public function init() {
 
@@ -51,7 +52,6 @@ class CPAC_Column_Post_Comment_Status extends CPAC_Column {
 	 * @since 2.0.3
 	 */
 	function get_raw_value( $post_id ) {
-
 		return get_post_field( 'comment_status', $post_id, 'raw' );
 	}
 }

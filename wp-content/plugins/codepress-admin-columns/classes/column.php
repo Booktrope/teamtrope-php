@@ -79,7 +79,7 @@ class CPAC_Column {
 	/**
 	 * Determine whether this column type should be available
 	 *
-	 * @since 2.3
+	 * @since 2.2
 	 *
 	 * @return bool Whether the column type should be available
 	 */
@@ -129,7 +129,8 @@ class CPAC_Column {
 			'is_registered'		=> true,	// Should the column be registered based on conditional logic, example usage see: 'post/page-template.php'
 			'is_cloneable'		=> true,	// Should the column be cloneable
 			'default'			=> false,	// Is this a WP default column,
-			'group'				=> 'custom'
+			'group'				=> 'custom',
+			'hidden'			=> false
 		);
 
 		foreach ( $default_properties as $property => $value ) {
@@ -138,8 +139,10 @@ class CPAC_Column {
 
 		// Default options
 		$default_options = array(
-			'width'	=> null, // Width for this column.
-			'state'	=> 'off' // Active state for this column.
+			'before'	=> '', // Before field
+			'after'		=> '', // After field
+			'width'		=> null, // Width for this column.
+			'state'		=> 'off' // Active state for this column.
 		);
 
 		/**
@@ -164,9 +167,7 @@ class CPAC_Column {
 		}
 
 		// Check whether the column should be available
-		if ( ! isset( $this->properties['is_registered'] ) ) {
-			$this->properties['is_registered'] = $this->apply_conditional();
-		}
+		$this->properties['is_registered'] = $this->apply_conditional();
 
 		/**
 		 * Filter the properties of a column type, such as type and is_cloneable
@@ -248,6 +249,45 @@ class CPAC_Column {
 	}
 
 	/**
+	 * @since 1.0
+	 */
+	public function get_before() {
+		return stripslashes( $this->options->before );
+	}
+
+	/**
+	 * @since 1.0
+	 */
+	public function get_after() {
+		return stripslashes( $this->options->after );
+	}
+
+	/**
+	 * @since 3.2.1
+	 */
+	public function get_type() {
+		return $this->properties->type;
+	}
+
+	/**
+	 * Checks column type
+	 *
+	 * @since 3.2.1
+	 * @param string $type Column type. Also work without the 'column-' prefix. Example 'column-meta' or 'meta'.
+	 * @return bool Matches column type
+	 */
+	public function is_type( $type ) {
+		return ( $type === $this->get_type() ) || ( 'column-' . $type === $this->get_type() );
+	}
+
+	/**
+	 * @since 2.1.1
+	 */
+	public function get_post_type() {
+		return $this->storage_model->get_post_type();
+	}
+
+	/**
 	 * @param string $field_key
 	 * @return void
 	 */
@@ -309,7 +349,10 @@ class CPAC_Column {
 
 			// Label can not contains the character ':', because
 			// CPAC_Column::get_sanitized_label() will return an empty string
-			$options['label'] = str_replace( ':', '', $options['label'] );
+			// and make an exception for site_url()
+			if ( false === strpos( $options['label'], site_url() ) ) {
+				$options['label'] = str_replace( ':', '', $options['label'] );
+			}
 		}
 
 		// used by child classes for additional sanitizing
@@ -321,7 +364,7 @@ class CPAC_Column {
 	/**
 	 * @since 2.0
 	 */
-	function get_label() {
+	public function get_label() {
 
 		/**
 		 * Filter the column instance label
@@ -347,52 +390,6 @@ class CPAC_Column {
 		$string = str_replace( 'https://', '', $string );
 
 		return $string;
-	}
-
-	/**
-	 * @since 2.2
-	 * @param $id Cache ID
-	 * @return string MD5 Cache ID
-	 */
-	function get_cache_id( $id ) {
-		return md5( $this->storage_model->key . $this->properties->name . $id );
-	}
-
-	/**
-	 * @since 2.0
-	 * @param $id Cache ID
-	 * @param $cache_object Cache Object
-	 */
-	function set_cache( $id, $cache_object ) {
-
-		if ( empty( $cache_object ) ) {
-			return false;
-		}
-
-		set_transient( $this->get_cache_id( $id ), $cache_object );
-	}
-
-	/**
-	 * @since 2.0
-	 * @param $id Cache ID ( could be a name of an addon for example )
-	 * @return false | mixed Returns either false or the cached objects
-	 */
-	function get_cache( $id ) {
-		$cache = get_transient( $this->get_cache_id( $id ) );
-
-		if ( empty( $cache ) ) {
-			return false;
-		}
-
-		return $cache;
-	}
-
-	/**
-	 * @since 2.0
-	 * @param $id Cache ID
-	 */
-	function delete_cache( $id ) {
-		delete_transient( $this->get_cache_id( $id ) );
 	}
 
 	/**
@@ -482,7 +479,7 @@ class CPAC_Column {
 	 * @param string $url
 	 * @return bool
 	 */
-	protected function is_image( $url ) {
+	protected function is_image_url( $url ) {
 
 		if ( ! is_string( $url ) ) {
 			return false;
@@ -513,6 +510,38 @@ class CPAC_Column {
 		}
 
 		return $image_sizes;
+	}
+
+	/**
+	 * @since 2.2.6
+	 */
+	public function get_terms_for_display( $term_ids, $taxonomy ) {
+		$values = array();
+		$term_ids = (array) $term_ids;
+		if ( $term_ids && ! is_wp_error( $term_ids ) ) {
+			$post_type = $this->get_post_type();
+			foreach ( $term_ids as $term_id ) {
+				$term = get_term( $term_id, $taxonomy );
+				$title = esc_html( sanitize_term_field( 'name', $term->name, $term->term_id, $term->taxonomy, 'edit' ) );
+
+				$filter_key = $term->taxonomy;
+				if ( 'category' === $term->taxonomy ) {
+					$filter_key = 'category_name';
+				}
+
+				$link = "<a href='edit.php?post_type={$post_type}&{$filter_key}={$term->slug}'>{$title}</a>";
+				if ( $post_type == 'attachment' ) {
+					$link = "<a href='upload.php?taxonomy={$filter_key}&term={$term->slug}'>{$title}</a>";
+				}
+
+				$values[] = $link;
+			}
+		}
+		if ( ! $values ) {
+			return false;
+		}
+
+		return implode( ', ', $values );
 	}
 
 	/**
@@ -566,20 +595,65 @@ class CPAC_Column {
 	}
 
 	/**
+	 * @since: 2.2.6
+	 *
+	 */
+	public function get_color_for_display( $color_hex ) {
+		if ( ! $color_hex ) {
+			return false;
+		}
+		$text_color = $this->get_text_color( $color_hex );
+		return "<div class='cpac-color'><span style='background-color:{$color_hex};color:{$text_color}'>{$color_hex}</span></div>";
+	}
+
+	/**
+	 * Determines text color absed on bakground coloring.
+	 *
+	 * @since 1.0
+	 */
+	public function get_text_color( $bg_color ) {
+
+		$rgb = $this->hex2rgb( $bg_color );
+
+		return $rgb && ( ( $rgb[0]*0.299 + $rgb[1]*0.587 + $rgb[2]*0.114 ) < 186 ) ? '#ffffff' : '#333333';
+	}
+
+	/**
+	 * Convert hex to rgb
+	 *
+	 * @since 1.0
+	 */
+	public function hex2rgb( $hex ) {
+		$hex = str_replace( "#", "", $hex );
+
+		if(strlen($hex) == 3) {
+			$r = hexdec(substr($hex,0,1).substr($hex,0,1));
+			$g = hexdec(substr($hex,1,1).substr($hex,1,1));
+			$b = hexdec(substr($hex,2,1).substr($hex,2,1));
+		} else {
+			$r = hexdec(substr($hex,0,2));
+			$g = hexdec(substr($hex,2,2));
+			$b = hexdec(substr($hex,4,2));
+		}
+		$rgb = array($r, $g, $b);
+
+		return $rgb;
+	}
+
+	/**
 	 * @since 1.0
 	 * @param mixed $meta Image files or Image ID's
 	 * @param array $args
 	 * @return array HTML img elements
 	 */
 	public function get_thumbnails( $images, $args = array() ) {
-		$thumbnails = array();
 
 		if ( empty( $images ) || 'false' == $images ) {
-			return $thumbnails;
+			return array();
 		}
 
 		// turn string to array
-		if ( is_string( $images ) ) {
+		if ( is_string( $images ) || is_numeric( $images ) ) {
 			if ( strpos( $images, ',' ) !== false ) {
 				$images = array_filter( explode( ',', $this->strip_trim( str_replace( ' ', '', $images ) ) ) );
 			}
@@ -598,8 +672,10 @@ class CPAC_Column {
 
 		extract( $args );
 
+		$thumbnails = array();
 		foreach( $images as $value ) {
-			if ( $this->is_image( $value ) ) {
+
+			if ( $this->is_image_url( $value ) ) {
 
 				// get dimensions from image_size
 				if ( $sizes = $this->get_image_size_by_name( $image_size ) ) {
@@ -626,6 +702,10 @@ class CPAC_Column {
 			// Media Attachment
 			elseif ( is_numeric( $value ) && wp_get_attachment_url( $value ) ) {
 
+				$src = '';
+				$width = '';
+				$height = '';
+
 				if ( ! $image_size || 'cpac-custom' == $image_size ) {
 					$width 		= $image_size_w;
 					$height 	= $image_size_h;
@@ -634,22 +714,33 @@ class CPAC_Column {
 					$image_size = array( $width, $height );
 				}
 
-				// image attributes
-				$attributes = wp_get_attachment_image_src( $value, $image_size );
-				$src 		= $attributes[0];
-				$width		= $attributes[1];
-				$height		= $attributes[2];
+				// Is Image
+				if ( $attributes = wp_get_attachment_image_src( $value, $image_size ) ) {
+					$src 	= $attributes[0];
+					$width	= $attributes[1];
+					$height	= $attributes[2];
 
-				// image size by name
-				if ( $sizes = $this->get_image_size_by_name( $image_size ) ) {
-					$width 	= $sizes['width'];
-					$height	= $sizes['height'];
+					// image size by name
+					if ( $sizes = $this->get_image_size_by_name( $image_size ) ) {
+						$width 	= $sizes['width'];
+						$height	= $sizes['height'];
+					}
+				}
+
+				// Is File, use icon
+				elseif ( $attributes = wp_get_attachment_image_src( $value, $image_size, true ) ) {
+					$src = $attributes[0];
+
+					if ( $sizes = $this->get_image_size_by_name( $image_size ) ) {
+						$width = $sizes['width'];
+						$height = $sizes['height'];
+					}
 				}
 
 				// maximum dimensions
 				$max = max( array( $width, $height ) );
 
-				$thumbnails[] = "<span class='cpac-column-value-image' style='width:{$width}px;height:{$height}px;'><img style='max-width:{$max}px;max-height:{$max}px;' src='{$attributes[0]}' alt=''/></span>";
+				$thumbnails[] = "<span class='cpac-column-value-image' style='width:{$width}px;height:{$height}px;'><img style='max-width:{$max}px;max-height:{$max}px;' src='{$src}' alt=''/></span>";
 			}
 		}
 
@@ -664,7 +755,7 @@ class CPAC_Column {
 	 * @param array $pieces
 	 * @return string Imploded array
 	 */
-	protected function recursive_implode( $glue, $pieces ) {
+	public function recursive_implode( $glue, $pieces ) {
 		foreach( $pieces as $r_pieces )	{
 			if ( is_array( $r_pieces ) ) {
 				$retVal[] = $this->recursive_implode( $glue, $r_pieces );
@@ -687,7 +778,7 @@ class CPAC_Column {
 	 * @param string $date
 	 * @return string Formatted date
 	 */
-	private function get_timestamp( $date ) {
+	public function get_timestamp( $date ) {
 
 		if ( empty( $date ) || in_array( $date, array( '0000-00-00 00:00:00', '0000-00-00', '00:00:00' ) ) ) {
 			return false;
@@ -748,11 +839,49 @@ class CPAC_Column {
 	}
 
 	/**
+	 * Get display name.
+	 *
+	 * Can also be used by addons.
+	 *
+	 * @since 2.0
+	 */
+	public function get_display_name( $user_id ) {
+
+		if ( ! $userdata = get_userdata( $user_id ) ) {
+			return false;
+		}
+
+		$name = '';
+
+		if ( ! empty( $this->options->display_author_as ) ) {
+
+			$display_as = $this->options->display_author_as;
+
+			if ( 'first_last_name' == $display_as ) {
+				$first 	= ! empty( $userdata->first_name ) ? $userdata->first_name : '';
+				$last 	= ! empty( $userdata->last_name ) ? " {$userdata->last_name}" : '';
+				$name 	= $first.$last;
+			}
+
+			elseif ( ! empty( $userdata->{$display_as} ) ) {
+				$name = $userdata->{$display_as};
+			}
+		}
+
+		// default to display_name
+		if ( ! $name ) {
+			$name = $userdata->display_name;
+		}
+
+		return $name;
+	}
+
+	/**
 	 * @since 2.0
 	 * @param string $field_key
 	 * @return string Attribute Name
 	 */
-	function label_view( $label, $description = '', $pointer = '' ) {
+	public function label_view( $label, $description = '', $pointer = '' ) {
 		?>
 		<td class="label">
 			<label for="<?php $this->attr_id( $pointer ); ?>">
@@ -767,7 +896,7 @@ class CPAC_Column {
 	/**
 	 * @since 2.0
 	 */
-	function display_field_date_format() {
+	public function display_field_date_format() {
 
 		$field_key		= 'date_format';
 		$label			= __( 'Date Format', 'cpac' );
@@ -791,7 +920,7 @@ class CPAC_Column {
 	/**
 	 * @since 2.0
 	 */
-	function display_field_excerpt_length() {
+	public function display_field_excerpt_length() {
 
 		$field_key		= 'excerpt_length';
 		$label			= __( 'Excerpt length', 'cpac' );
@@ -810,7 +939,7 @@ class CPAC_Column {
 	/**
 	 * @since 2.0
 	 */
-	function display_field_preview_size() {
+	public function display_field_preview_size() {
 
 		$field_key		= 'image_size';
 		$label			= __( 'Preview size', 'cpac' );
@@ -847,7 +976,7 @@ class CPAC_Column {
 	/**
 	 * @since 2.1.1
 	 */
-	function display_field_before_after() {
+	public function display_field_before_after() {
 		?>
 		<tr class="column_before">
 			<?php $this->label_view( __( "Before", 'cpac' ), __( 'This text will appear before the custom field value.', 'cpac' ), 'before' ); ?>
@@ -865,6 +994,36 @@ class CPAC_Column {
 	}
 
 	/**
+	 * @since 2.3.2
+	 */
+	public function display_field_user_format() {
+
+		$nametypes = array(
+			'display_name'		=> __( 'Display Name', 'cpac' ),
+			'first_name'		=> __( 'First Name', 'cpac' ),
+			'last_name'			=> __( 'Last Name', 'cpac' ),
+			'nickname'			=> __( 'Nickname', 'cpac' ),
+			'user_login'		=> __( 'User Login', 'cpac' ),
+			'user_email'		=> __( 'User Email', 'cpac' ),
+			'ID'				=> __( 'User ID', 'cpac' ),
+			'first_last_name'	=> __( 'First and Last Name', 'cpac' ),
+		);
+
+		?>
+		<tr class="column-author-name">
+			<?php $this->label_view( __( 'Display format', 'cpac' ), __( 'This is the format of the author name.', 'cpac' ), 'display_author_as' ); ?>
+			<td class="input">
+				<select name="<?php $this->attr_name( 'display_author_as' ); ?>" id="<?php $this->attr_id( 'display_author_as' ); ?>">
+				<?php foreach ( $nametypes as $key => $label ) : ?>
+					<option value="<?php echo $key; ?>"<?php selected( $key, $this->options->display_author_as ) ?>><?php echo $label; ?></option>
+				<?php endforeach; ?>
+				</select>
+			</td>
+		</tr>
+		<?php
+	}
+
+	/**
 	 * @since 2.0
 	 * @param array Column Objects
 	 * @return string HTML List
@@ -879,13 +1038,19 @@ class CPAC_Column {
 
 		// sort by alphabet
 		$_columns = array();
+
 		foreach ( $columns as $column ) {
-			$_columns[ $column->properties->type ] = 0 === strlen( strip_tags( $column->properties->label ) ) ? ucfirst( $column->properties->type ) : $column->properties->label;
+			if ( $column->properties->hidden ) {
+				continue;
+			}
+
+			$_columns[ $column->properties->type ] = ( 0 === strlen( strip_tags( $column->properties->label ) ) ) ? ucfirst( $column->properties->type ) : $column->properties->label;
 		}
+
 		asort( $_columns );
 
 		$list = "<optgroup label='{$label}'>";
-		foreach ( $_columns as $type => $label ){
+		foreach ( $_columns as $type => $label ) {
 			$selected = selected( $this->properties->type, $type, false );
 			$list .= "<option value='{$type}'{$selected}>{$label}</option>";
 		}
@@ -905,7 +1070,6 @@ class CPAC_Column {
 		$column_list = '';
 
 		$groups = $this->storage_model->get_column_type_groups();
-
 		foreach ( $groups as $group => $label ) {
 			$column_list .= $this->get_column_list( $this->storage_model->column_types[ $group ], $label );
 		}
@@ -1031,8 +1195,8 @@ class CPAC_Column {
 
 					</tbody>
 				</table>
-			</div><!--.column-form-->
-		</div><!--.cpac-column-->
+			</div>
+		</div>
 		<?php
 	}
 }
