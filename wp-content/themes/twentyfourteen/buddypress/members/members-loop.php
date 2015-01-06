@@ -70,7 +70,7 @@
 			<span class="update"> <?php echo $avail_indicator; ?></span>
 				<div class="item-title">
 					<a href="<?php bp_member_permalink(); ?>"><?php bp_member_name(); ?></a>
-
+					<?php bp_member_profile_data('field=Location'); ?>
 					<span class="update"> <?php echo $mbr_roles ?></span>
 					<div class="item-meta"><span class="activity"><?php bp_member_last_active(); ?></span></div>
 				</div>
