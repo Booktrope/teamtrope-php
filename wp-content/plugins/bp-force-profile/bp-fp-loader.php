@@ -129,14 +129,14 @@ function bp_fp_notice()
 			if ($xprofile_fields_count > 0)
 			{
 				$message = '<div id="bp_fp_message">' . __('Please complete your profile to continue', 'bp-force-profile') . ' (' . $xprofile_fields_count . __(' fields are missing', 'bp-force-profile') . ')</div>';
-				$message .= '<ul id="bp_fp_fields">';
+//				$message .= '<ul id="bp_fp_fields">';
 
 				foreach ($xprofile_fields as $field) 
 				{
-					$message .= '<li>' . $field->name . '</li>';
+//					$message .= '<li>' . $field->name . '</li>';
 				}
 
-				$message .= '</ul>';
+//				$message .= '</ul>';
 
 				echo '<div id="bp_fp_notice"><div id="bp_fp_container" class="red">' . $message . '</div></div>';
 			}	
