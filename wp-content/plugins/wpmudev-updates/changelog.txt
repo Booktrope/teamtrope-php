@@ -5,6 +5,33 @@ Change Log:
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 
+3.4.9 - 11/14/2014 - Aaron
+----------------------------------------------------------------------
+- New: Prompt to grant support access after submitting a ticket
+- Fix: Add workaround for poorly coded Mojo Marketplace/github-plugin-updater
+- Fix: Stop running and deregister crons on subsites in multisite
+- Fix: Remove unused free projects list from single member dashboard
+- Fix: Minor css padding issue in WP 4.0
+
+3.4.8 - 11/6/2014 - Aaron
+----------------------------------------------------------------------
+- New: Support single membership autoupdates for packaged products (CoursePress + MarketPress)
+
+3.4.7 - 10/9/2014 - Aaron
+----------------------------------------------------------------------
+- Fix: Adjust css to avoid triggering a Comodo firewall rule on some hosts
+
+3.4.6 - 8/21/2014 - Aaron
+----------------------------------------------------------------------
+- Fix: Install button never showed complete in project details window
+- Fix: Conflicts with other FontAwesome plugins
+
+3.4.5 - 7/16/2014 - Aaron
+----------------------------------------------------------------------
+- Fix: Check system compatibility before allowing auto-installs from notices and widget
+- Fix: Don't show activate links on listings page if project is incompatible
+- Code reformatting and documentation improvements
+
 3.4.4 - 5/1/2014
 ----------------------------------------------------------------------
 - Fix: Change upgrade urls to route through login on WPMU DEV
@@ -223,4 +250,4 @@ Added option to disable admin notices.
 Initial Release.
 
 
-259000-1400291654-au
+259000-1420517110-au

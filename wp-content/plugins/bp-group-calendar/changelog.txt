@@ -5,6 +5,19 @@ Change Log:
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 
+1.4.2 - 10/14/2014
+----------------------------------------------------------------------
+- Fix: Improve the check for 24hr time localization to work with custom format strings
+
+1.4.1 - 9/4/2014
+----------------------------------------------------------------------
+- Fix: More timezone issues with highlighted events in the calendars
+- Fix: Various PHP notices
+
+1.4 - 9/1/2014
+----------------------------------------------------------------------
+- Fix: Highlighted events in the calendars were showing as UTC.
+
 1.3.9 - 5/19/2014
 ----------------------------------------------------------------------
 - Fix: Dates were being output in the wrong timezone
@@ -146,4 +159,4 @@ Change Log:
 - Initial Release.
 
 
-259000-1401913763-au
+259000-1420517109-au
