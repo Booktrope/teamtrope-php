@@ -68,8 +68,10 @@ function bp_fp_launch()
 	if (is_user_logged_in()) 
 	{
 		$user_id 	= wp_get_current_user()->ID;
-		$current_url  = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-//echo $current_url;echo "<br/>";
+		$current_url  = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$current_url  = home_url(  $_SERVER['REQUEST_URI'] );echo "<br/>";
+
+// echo $current_url;echo "<br/>";
 		$redirect_url = bp_fp_get_redirect_url($user_id);
 //echo $redirect_url;echo "<br/>";
 		if (strpos($current_url, $redirect_url) === false)
@@ -106,11 +108,12 @@ function bp_fp_styles()
  */
 function bp_fp_notice() 
 {
-echo "at notice";	
 	if (is_user_logged_in()) 
 	{
 		$user_id 	= wp_get_current_user()->ID;
-		$current_url  = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+//		$current_url  = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		$current_url  = home_url(  $_SERVER['REQUEST_URI'] );echo "<br/>";
+
 		$redirect_url = bp_fp_get_redirect_url($user_id);
 
 		if (strpos($current_url, $redirect_url) !== false)
@@ -126,7 +129,6 @@ echo "at notice";
 	
 			$xprofile_fields_count = count($xprofile_fields);
 			
-echo $xprofile_fields_count;
 			if ($xprofile_fields_count > 0)
 			{
 				$message = '<div id="bp_fp_message">' . __('Please complete your profile to continue', 'bp-force-profile') . ' (' . $xprofile_fields_count . __(' fields are missing', 'bp-force-profile') . ')</div>';
