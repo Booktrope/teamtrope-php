@@ -122,21 +122,26 @@ function bp_fp_notice()
 			$sql_stmt = "SELECT `name` FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')";
 			$xprofile_fields = $wpdb->get_results($sql_stmt);
 
-	//		$xprofile_fields = $wpdb->get_results("SELECT `name` FROM {$bp_prefix}bp_xprofile_fields WHERE parent_id = 0 AND is_required = 1 AND id NOT IN (SELECT field_id FROM {$bp_prefix}bp_xprofile_data WHERE user_id = {$user_id} AND `value` IS NOT NULL AND `value` != '')");
-	
 			$xprofile_fields_count = count($xprofile_fields);
-			
+			$list_prefix = "";
 			if ($xprofile_fields_count > 0)
 			{
-				$message = '<div id="bp_fp_message">' . __('Please complete your profile to continue', 'bp-force-profile') . ' (' . $xprofile_fields_count . __(' fields are missing', 'bp-force-profile') . ')</div>';
-//				$message .= '<ul id="bp_fp_fields">';
+				if ($xprofile_fields_count == 1)
+				{
+					$message = '<div id="bp_fp_message">' . __('Please complete your profile to continue', 'bp-force-profile') . ' (' . $xprofile_fields_count . __(' field', 'bp-force-profile') . '): ';				
+				} else 
+				{
+					$message = '<div id="bp_fp_message">' . __('Please complete your profile to continue', 'bp-force-profile') . ' (' . $xprofile_fields_count . __(' fields', 'bp-force-profile') . '): ';
+				}
+				$message .= '';
 
 				foreach ($xprofile_fields as $field) 
 				{
-//					$message .= '<li>' . $field->name . '</li>';
+					$message .= $list_prefix . $field->name;
+					$list_prefix = ", ";
 				}
 
-//				$message .= '</ul>';
+				$message .= '</div>';
 
 				echo '<div id="bp_fp_notice"><div id="bp_fp_container" class="red">' . $message . '</div></div>';
 			}	
