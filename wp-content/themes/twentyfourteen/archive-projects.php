@@ -1,4 +1,35 @@
 <?php 	get_header();
+
+	if ( ! function_exists( 'bt_func_get_grid_for_status' ) ) :
+	function bt_func_get_grid_for_status($category)
+	{
+		//look up in cache
+		if ( false === ( $grid_cache = get_transient( $category->slug."_grid" ) ) ) 
+		{
+			$grid_cache = bt_func_load_grid_from_db($category);
+			set_transient($category->slug."_grid", $grid_cache, HOUR_IN_SECONDS);
+		} 
+		
+		return $grid_cache;
+	}
+	endif;
+	if ( ! function_exists( '' ) ) :;
+	function bt_func_load_grid_from_db($category) {
+
+	 $posts = get_posts(array(
+	 'post_type' => 'projects',
+	 'taxonomy' => $category->taxonomy,
+	 'term' => $category->slug,
+	 'orderby' => 'title',
+	 'order' => 'ASC',
+	 'nopaging' => true,
+	 ));
+	 return $posts;
+
+	}
+	endif;
+
+
 		ini_set('memory_limit', '-1'); ?>
 <link rel="stylesheet" id="gforms_css-css" href="/wp-content/plugins/gravityforms/css/forms.css" type="text/css" media="all">
 <script src="http://underscorejs.org/underscore.js"></script>
@@ -23,15 +54,22 @@
  <br/>
  <h2><?php echo $category->name; 
  
- $posts = get_posts(array(
- 'post_type' => 'projects',
- 'taxonomy' => $category->taxonomy,
- 'term' => $category->slug,
- 'orderby' => 'title',
- 'order' => 'ASC',
- 'nopaging' => true,
- ));
- echo " (" . count($posts) . ")"; ?>  <a id="tableSwitch" onclick="toggleTable<?php echo $i; ?>();" href="#" style="text-decoration:none;"><img src="https://teamtrope.com/wp-content/uploads/2014/02/expand_collapse_plus.gif"><img src="https://teamtrope.com/wp-content/uploads/2014/02/expand_collapse_minus.gif"></a></h2>
+/* 	if (false) {
+ 
+	 $posts = get_posts(array(
+	 'post_type' => 'projects',
+	 'taxonomy' => $category->taxonomy,
+	 'term' => $category->slug,
+	 'orderby' => 'title',
+	 'order' => 'ASC',
+	 'nopaging' => true,
+	 ));
+	} else {
+*/
+		$posts = bt_func_get_grid_for_status( $category );
+
+//	}
+ 	echo " (" . count($posts) . ")"; ?>  <a id="tableSwitch" onclick="toggleTable<?php echo $i; ?>();" href="#" style="text-decoration:none;"><img src="https://teamtrope.com/wp-content/uploads/2014/02/expand_collapse_plus.gif"><img src="https://teamtrope.com/wp-content/uploads/2014/02/expand_collapse_minus.gif"></a></h2>
 <?php 
 $total_projects = $total_projects + intval(count($posts));
 
@@ -64,7 +102,7 @@ function toggleTable<?php echo $i; ?>() {
     lTable.style.display = (lTable.style.display == "table") ? "none" : "table";
 }
 </script>
-<table id="Table<?php echo $i; ?>" class="sortable">
+<table id="Table<?php echo $i; ?>" style="display: none;" class="sortable">
    <tr>
    <?php 
    	foreach($headers as $header)
