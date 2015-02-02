@@ -25,9 +25,9 @@
 <?php 
 $total_projects = $total_projects + intval(count($posts));
 
-$headers = array("Title", "Author","Genre","Teamroom Link",
+$headers = array( "Title", "Author","Genre",
 							 	 "Editor","Proofreader", "Project Manager",
-                 "Marketing Manager","Cover Designer");
+                 "Marketing Manager","Cover Designer", "Teamroom Link" );
 ?>
 
 <script type="text/javascript" async="">
@@ -48,12 +48,12 @@ function toggleTable<?php echo $i; ?>() {
 <?php 
 
 	$arrayFields = array(
-							"book_teamroom_link"       => array("link", "<span class='awesome-x'>&#xf00d;</span>", "Team Room", false),
    						"book_project_manager"		=> array("user", "-", "", false),
    						"book_editor"					=> array("user", "-", "", false),
    						"book_proofreader"			=> array("user", "-", "", false),
    						"book_marketing_manager"	=> array("user", "-", "", false),
-   						"book_cover_designer"		=> array("user", "-", "", false)
+   						"book_cover_designer"		=> array("user", "-", "", false),
+							"book_teamroom_link"       => array("link", "<span class='awesome-x'>&#xf00d;</span>", "Team Room", false)
 	);
 	
  foreach($posts as $post): 
