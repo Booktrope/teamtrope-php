@@ -25,25 +25,9 @@
 <?php 
 $total_projects = $total_projects + intval(count($posts));
 
-$headers = array("Title", "Days in Step", "Author","Genre","Teamroom Link",
-				 "Prod Workflow Step","Design Step","Marketing Step",
-			 	 "Project Manager","Editor","Proofreader",
-                 "Marketing Manager","Cover Designer","Edit Complete Date","Original Manuscript",
-                 "Edited Manuscript","Children's Book?",
-                 "Color Interior?","Has Index?","Has Internal Illustrations?",
-                 "Non-Standard Size?","Final Manuscript","Has Sub-Chapters?",
-                 "Special Text Treatment", "Page Count", 
-                 "Previously Published?", "Layout Style Choice","Use Pen Name?",
-                 "Use Pen Name for Copyright?","Pen Name","Exact Name on Copyright",
-                 "Layout Upload","Layout Approved Date","Final Page Count",
-                 "eBook Front Cover","CreateSpace Cover","Lightning Source Cover",
-                 "Alt. Cover Template","Cover Approval Date","Final Title",
-                 "Series Name","Series Number","Book Blurb","Blurb - One Line",
-                 "Author Bio","Endorsements","book Print Price","eBook Price",
-                 "BISAC Code One","BISAC Code Two","BISAC Code Three","Search Terms",
-                 "Age Range","Paperback Cover Type","Marketing Release Date",
-                 "Publication Date","Final Manuscript","Final ePub","Final Mobi",
-                 "Production Exception?");
+$headers = array("Title", "Author","Genre","Teamroom Link",
+							 	 "Editor","Proofreader", "Project Manager",
+                 "Marketing Manager","Cover Designer");
 ?>
 
 <script type="text/javascript" async="">
@@ -64,63 +48,12 @@ function toggleTable<?php echo $i; ?>() {
 <?php 
 
 	$arrayFields = array(
-						"book_teamroom_link"       => array("link", "<span class='awesome-x'>&#xf00d;</span>", "Team Room", false),
-						"book_pcr_step"							=> array("single", "-", "", false),
-						"book_pcr_step_cover_design"							=> array("single", "-", "", false),
-						"book_pcr_step_mkt_info"							=> array("single", "-", "", false),
+							"book_teamroom_link"       => array("link", "<span class='awesome-x'>&#xf00d;</span>", "Team Room", false),
    						"book_project_manager"		=> array("user", "-", "", false),
    						"book_editor"					=> array("user", "-", "", false),
    						"book_proofreader"			=> array("user", "-", "", false),
    						"book_marketing_manager"	=> array("user", "-", "", false),
-   						"book_cover_designer"		=> array("user", "-", "", false),   	
-   						"book_edit_complete_date"	=> array("single", "-", "", false),
-						"book_manuscript_original" => array("single", "-", "", true),
-						"book_manuscript_edited"	=> array("single", "-", "", true),
-						"book_childrens_book"		=> array("checkbox", "-", "", false),
-						"book_color_interior"		=> array("checkbox", "-", "", false),
-						"book_has_index"				=> array("checkbox", "-", "", false),
-						"book_has_internal_illustrations"	=> array("checkbox", "-", "", false),
-						"book_non-standard_size"				=> array("checkbox", "-", "", false),
-						"book_manuscript_proofed"				=> array("single", "-", "", true),
-						"book_has_sub-chapters"					=> array("checkbox", "-", "", false),
-						"book_special_text_treatment"			=> array("single", "-", "", true),
-						"book_proofed_page_count"				=> array("single", "-", "", false),
-						"book_previously_published"			=> array("single", "-", "", true),
-						"book_layout_style_choice"				=> array("single", "-", "", true),
-						"book_use_pen_name_on_title"			=> array("checkbox", "-", "", false),
-						"book_use_pen_name_for_copyright"	=> array("checkbox", "-", "", false),
-						"book_pen_name"							=> array("single", "-", "", false),
-						"book_exact_name_on_copyright"		=> array("single", "-", "", true),
-						"book_layout_upload"						=> array("single", "-", "", true),
-						"book_layout_approved_date"			=> array("single", "-", "", false),
-						"book_final_page_count"					=> array("single", "-", "", false),
-						"book_ebook_front_cover"				=> array("thumbnail", "-", "", true),
-						"book_createspace_cover"				=> array("thumbnail", "-", "", true),
-						"book_lightning_source_cover"			=> array("thumbnail", "-", "", true),
-						"book_alternative_cover_template"	=> array("thumbnail", "-", "", true),
-						"book_cover_art_approval_date"		=> array("single", "-", "", false),
-						"book_final_title"						=> array("single", "-", "", false),
-						"book_series_name"						=> array("single", "-", "", false),
-						"book_series_number"						=> array("single", "-", "", false),
-						"book_blurb_description"				=> array("single", "-", "", true),
-						"book_blurb_one_line"					=> array("single", "-", "", true),
-						"book_author_bio"							=> array("single", "-", "", true),
-						"book_endorsements"						=> array("single", "-", "", true),
-						"book_print_price"						=> array("price", "-", "", false),
-						"book_ebook_price"						=> array("price", "-", "", false),
-						"book_bisac_code_1"						=> array("single", "-", "", false),
-						"book_bisac_code_2"						=> array("single", "-", "", false),
-						"book_bisac_code_3"						=> array("single", "-", "", false),
-						"book_search_terms"						=> array("single", "-", "", true),
-						"book_age_range"							=> array("radio", "-", "", false),
-						"book_paperback_cover_type"			=> array("single", "-", "", true),
-						"book_marketing_release_date"			=> array("single", "-", "", false),
-						"book_publication_date"					=> array("single", "-", "", false),
-						"book_manuscript_final"					=> array("single", "-", "", true),
-						"book_final_epub"							=> array("single", "-", "", true),
-						"book_final_mobi"							=> array("single", "-", "", true),
-						"book_production_exception"			=> array("single", "-", "", false),
-
+   						"book_cover_designer"		=> array("user", "-", "", false)
 	);
 	
  foreach($posts as $post): 
@@ -135,7 +68,6 @@ function toggleTable<?php echo $i; ?>() {
  ?>
  	<tr>
  		<td class="book-title"><a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a></td>
-		<td><?php echo daysInStatus( $post, false, $current_category); ?></td>
 
    	<?php echo wrapField($book_authors, "user"); ?>
    	<?php echo wrapField($genres, "taxonomy", "<span class='awesome-x'>&#xf00d;</span>"); ?>
