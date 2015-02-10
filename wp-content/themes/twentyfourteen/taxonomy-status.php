@@ -48,9 +48,10 @@ function toggleTable<?php echo $i; ?>() {
 <?php 
 
 	$arrayFields = array(
-   						"book_project_manager"		=> array("user", "-", "", false),
+
    						"book_editor"					=> array("user", "-", "", false),
    						"book_proofreader"			=> array("user", "-", "", false),
+   						"book_project_manager"		=> array("user", "-", "", false),
    						"book_marketing_manager"	=> array("user", "-", "", false),
    						"book_cover_designer"		=> array("user", "-", "", false),
 							"book_teamroom_link"       => array("link", "<span class='awesome-x'>&#xf00d;</span>", "Team Room", false)
