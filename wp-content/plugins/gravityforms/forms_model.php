@@ -75,6 +75,16 @@ class GFFormsModel {
     }
 
     public static function get_forms($is_active = null, $sort_column = "title", $sort_dir = "ASC", $is_trash = false){
+
+        // Cache the results here using the function arguments as a key
+        // This will only cache for the request
+        static $cached_results = array();
+        $cache_key = sha1(serialize(func_get_args()));
+
+        if(array_key_exists($cache_key, $cached_results)) {
+            return $cached_results[$cache_key];
+        }
+
         global $wpdb;
         $form_table_name =  self::get_form_table_name();
         $lead_table_name = self::get_lead_table_name();
@@ -98,30 +108,15 @@ class GFFormsModel {
         //Getting all forms
         $forms = $wpdb->get_results($sql);
 
-        //Getting entry count per form
-        $sql = "SELECT form_id, count(id) as lead_count FROM $lead_table_name l WHERE status='active' GROUP BY form_id";
-        $entry_count = $wpdb->get_results($sql);
-
-        //Getting view count per form
-        $sql = "SELECT form_id, sum(count) as view_count FROM $view_table_name GROUP BY form_id";
-        $view_count = $wpdb->get_results($sql);
-
         //Adding entry counts and to form array
-        foreach($forms as &$form){
-            foreach($view_count as $count){
-                if($count->form_id == $form->id){
-                    $form->view_count = $count->view_count;
-                    break;
-                }
-            }
-
-            foreach($entry_count as $count){
-                if($count->form_id == $form->id){
-                    $form->lead_count = $count->lead_count;
-                    break;
-                }
-            }
+        foreach($forms as &$form) {
+            // Setting to zero as they are not necessary, but may be
+            // referred to elsewhere.
+            $form->view_count = 0;
+            $form->lead_count = 0;
         }
+
+        $cached_results[$cache_key] = $forms;
 
         return $forms;
     }
