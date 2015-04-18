@@ -11,7 +11,6 @@
 	$show_me = calcShowMeSteps($this_id, $custom_fields);
 
 	echo "<div class='padder'>";
-
 	outputProjectHead($custom_fields);
 	$phases = getProjectPhases();
 	outputProjectDetail($phases, $show_me, $custom_fields);
@@ -46,7 +45,7 @@ function calcStepsForPCR($stepName, $steps_to_do)
 		$pcr_data = get_post_custom($pcr->id);
 		$pcrs_to_do = get_field("pcr_show_steps");	
 	endwhile;
-	
+
 	if ( $pcrs_to_do <> "" ) 
 	{
 		foreach ($pcrs_to_do as $pcr) 
@@ -266,14 +265,28 @@ function outputPhaseTasks($phase_id, $show_me, $tasks, $custom_fields)
 				?><h2>You must complete other tasks before this task will be unlocked.</h2><?php
 				echo "<strong>System Prereq Hint:</strong> " . $task_custom['pcr_prereq_fields'][0];
 			} else {
-				if ($task_custom['pcr_form_name'][0] <> "" ) 
-				{ 
-?>
-					<h1><?php echo $task_custom['pcr_form_name'][0] ?></h1>
-<?php 
-					echo do_shortcode('[gravityform name="'. $task_custom['pcr_form_name'][0] .'" title=false description=true ajax="true"]'); 
-				} else {
-					outputCustomTaskCode($task, $task_custom, $custom_fields);
+				$user_allowed = true;
+				// if task is available for only admins, restrict to non WP admin users
+				$user_types = unserialize($task_custom['pcr_who_can_complete'][0]);
+				if (count($user_types) == 1) {
+					if ($user_types[0] == 'Admin') {
+						if ( ! current_user_can( 'manage_options' ) ) {
+							echo "<br/>You must be an Booktrope Staff to perform this task. We will complete it soon and you will be notified by a new activity entry in your Teamroom.";
+							$user_allowed = false;
+						}
+					}
+				}
+
+				if ($user_allowed) { 
+					if ($task_custom['pcr_form_name'][0] <> "" ) 
+					{ 				
+	?>
+						<h1><?php echo $task_custom['pcr_form_name'][0] ?></h1>
+	<?php 
+						echo do_shortcode('[gravityform name="'. $task_custom['pcr_form_name'][0] .'" title=false description=true ajax="true"]'); 
+					} else {
+						outputCustomTaskCode($task, $task_custom, $custom_fields);
+					}
 				}
 			}
 		} 
