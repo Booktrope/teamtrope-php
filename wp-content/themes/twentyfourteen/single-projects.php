@@ -92,7 +92,7 @@ function outputProjectHead($custom_fields)
 	if (!is_object($user_info)) {
 		$needs_list[] = "<label class='red'>" . "Needs Proofreader" . "</label>";
 	} else {
-		$needs_list[] = outputTeamMember ( $user_info, "red" );
+		$needs_list[] = outputTeamMember ( $user_info, "white" );
 	}
 
 	$user_info = get_userdata($custom_fields['book_cover_designer'][0]); 
