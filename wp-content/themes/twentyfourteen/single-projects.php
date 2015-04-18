@@ -558,7 +558,14 @@ function outputAssets($task, $task_custom, $custom_fields)
 		echo ' Marketing Release Date: ' . date('m-d-Y', strtotime($custom_fields['book_marketing_release_date'][0])) . "<br/>";
 	}
 	// when to show Blurb Notes - always
-		echo '<h4>Blurb Notes</h4>';
+		echo '<h4>Blurb Notes</h4>';		
+		if ( $custom_fields['book_blurb_approval'][0] == TRUE ) 
+		{
+			$answer = "Yes";
+		} else {
+			$answer = "No";
+		}
+		echo ' Blurb Approved: ' . $answer . "<br/>";
 		echo ' Blurb Notes: ' . $custom_fields['book_blurb_notes'][0] . "<br/>";
 
 	// when to show Blurb Submit - always

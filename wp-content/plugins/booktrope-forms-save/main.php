@@ -321,6 +321,7 @@ function btfs_set_post_content($entry, $form)
 	case "Approve Blurb":
 		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 
+		btfs_add_or_update_meta($book->ID, 'book_blurb_approval', $values["Is Blurb Approved?"]);
 		btfs_add_or_update_meta($book->ID, 'book_blurb_notes', $values["Blurb Notes"]);
 		btfs_add_or_update_meta($book->ID, 'book_blurb_approval_date', date("Ymd"));
 		break;		
