@@ -557,6 +557,15 @@ function outputAssets($task, $task_custom, $custom_fields)
 	} else {
 		echo ' Marketing Release Date: ' . date('m-d-Y', strtotime($custom_fields['book_marketing_release_date'][0])) . "<br/>";
 	}
+	// when to show Blurb Notes - always
+		echo '<h4>Blurb Notes</h4>';
+		echo ' Blurb Notes: ' . $custom_fields['book_blurb_notes'][0] . "<br/>";
+
+	// when to show Blurb Submit - always
+		echo '<h4>Blurb Submit</h4>';
+		echo ' Blurb: ' . $custom_fields['book_blurb_text'][0] . "<br/>";
+		echo ' Genre: ' . $custom_fields['book_blurb_genre'][0] . "<br/>";
+		echo ' Imprint: ' . $custom_fields['book_blurb_imprint'][0] . "<br/>";
 
 	
 	// when to show Layout Sample

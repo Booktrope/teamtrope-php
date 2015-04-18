@@ -311,6 +311,19 @@ function btfs_set_post_content($entry, $form)
 		btfs_save_attachment_into_book($book->ID, 'book_lightning_source_cover', $values["Lightning Source Cover Template File"]);
 		btfs_save_attachment_into_book($book->ID, 'book_alternative_cover_template', $values["Alternative Template File"]);	   
 		break;
+	case "Blurb Submit":
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
+
+		btfs_add_or_update_meta($book->ID, 'book_blurb_text', $values["Blurb"]);
+		btfs_add_or_update_meta($book->ID, 'book_blurb_genre', $values["Genre"]);
+		btfs_add_or_update_meta($book->ID, 'book_blurb_imprint', $values["Imprint"]);
+		break;		
+	case "Approve Blurb":
+		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
+
+		btfs_add_or_update_meta($book->ID, 'book_blurb_notes', $values["Blurb Notes"]);
+		btfs_add_or_update_meta($book->ID, 'book_blurb_approval_date', date("Ymd"));
+		break;		
 	case "Publication Fact Sheet (PFS)":
 		btfs_create_status_entry($formObj, $book, $entryId, $userId, $formName, $pcr_data["status"], 24, $cur_pcr_name);
 		
