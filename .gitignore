@@ -21,6 +21,7 @@ wp-content/*
 !wp-content/themes/
 !wp-content/tt-pcrs
 !wp-content/wp-control-data
+!wp-content/logos
 # Ignore everything in the "plugins" directory, except the plugins you
 # specify (see the commented-out examples for hints on how to do this.)
 # wp-content/plugins/*
