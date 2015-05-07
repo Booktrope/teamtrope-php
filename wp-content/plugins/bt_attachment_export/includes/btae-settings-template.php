@@ -32,9 +32,9 @@ $result = '';
 
 while( $projects->have_posts() ) {
   $projects->the_post();
-
-  $projectID = $projects->ID;
-
+  
+  $projectID = get_the_ID();
+  
   $custom_fields = get_post_custom($projectID);
 
   foreach ($attachments as $type) {
@@ -42,7 +42,7 @@ while( $projects->have_posts() ) {
     //$attachment_id = $custom_fields['book_manuscript_original'][0];
     $attachment_id = $custom_fields[$type][0];
     if ($attachment_id !== null && $attachment_id != '') {
-      $result.= $attachment_id.','.$type.','.wp_get_attachment_url($attachment_id)."\n";
+      $result.= $projectID.','.$attachment_id.','.$type.','.wp_get_attachment_url($attachment_id)."\n";
       $attachment_count++;
     }
   }
