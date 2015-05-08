@@ -10,4 +10,4 @@
  */
 define('BTUAE_PATH', plugin_dir_path(__FILE__));
 
-require_once BTAE_PATH.'/includes/btuae-settings-menu.php';
+require_once BTUAE_PATH.'/includes/btuae-settings-menu.php';
