@@ -50,6 +50,7 @@ function _bt_wo_me ($token = null)
 	$me_data['avatar_url'] = bp_core_fetch_avatar(array(
 		'item_id'   => $user_id,
 		'object'    => 'user',
+		'type'	    => 'full',
 		'no_grav'   => false, // Will return a default image if not a generic Gravatar URL
 		'html'      => false // Do not encode the URL in an img tag
 	));
