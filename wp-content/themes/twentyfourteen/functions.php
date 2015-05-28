@@ -1318,3 +1318,5 @@ function number_of_posts_on_archive($query){
 }
  
 add_filter('pre_get_posts', 'number_of_posts_on_archive');
+
+add_filter( 'nonce_life', function () { return 6 * HOUR_IN_SECONDS; } );
