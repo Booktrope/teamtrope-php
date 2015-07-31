@@ -104,7 +104,7 @@ function extra_fields_output(){
 		}
 	}
 	else { 
-		echo '<strong style="color:#777;">Project: <br/></strong>';
+		echo '<strong style="color:#777;">Go to Author Project Grid: <br/></strong>';
 		$url = trim($group_url);
 		$postid = url_to_postid( $url );
 		$cover_asset = get_post_meta($postid, "book_ebook_front_cover");
